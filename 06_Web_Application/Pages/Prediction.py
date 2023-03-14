@@ -1,10 +1,13 @@
 import streamlit as st
 import numpy as np
 import json
-from 06_Web_Application.make_pred import predict_period 
+import sys
 import pandas as pd
 import plotly.express as px
 
+sys.path.insert(1, "06_Web_Application/make_pred.py")
+
+from make_pred import predict_period
 # Setup data from csv
 # df = pd.read_csv("C:\Users\KingRemy\OneDrive - University of Keele\Documents\Collaborative App Development\Coursework\Stored_dataset\client_219_153_EDA.csv", header=0, delimiter=',')
 
