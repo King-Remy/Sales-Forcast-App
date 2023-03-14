@@ -79,7 +79,8 @@ make_pred = st.sidebar.button("Predict")
 
 # Making prediction and displaying data
 if make_pred:
-    p1 = pd.to_datetime(start_datetime)         # Converting startdate input into datetime
+    conv = str(start_datetime)
+    p1 = pd.to_datetime(conv)         # Converting startdate input into datetime
     purchase_period_prediction = predict_period(p1)
     
     st.text_area("Predicted purchase period", value=purchase_period_prediction,height=40)
