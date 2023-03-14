@@ -28,10 +28,10 @@ def predict_period(StartDate):
     # dict_out = {}
     
     # Creating the Season column
-    _condition_winter = (StartDate.dt.month>=1)&(StartDate.dt.month<=3)
-    _condtion_spring = (StartDate.dt.month>=4)&(StartDate.dt.month<=6)
-    _condition_summer = (StartDate.dt.month>=7)&(StartDate.dt.month<=9)
-    _condition_autumn = (StartDate.dt.month>=10)&(StartDate.dt.month<=12)
+    _condition_winter = (StartDate.month>=1)&(StartDate.month<=3)
+    _condtion_spring = (StartDate.month>=4)&(StartDate.month<=6)
+    _condition_summer = (StartDate.month>=7)&(StartDate.month<=9)
+    _condition_autumn = (StartDate.month>=10)&(StartDate.month<=12)
     Season = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
 
     if Season == 'Autumn':
@@ -43,15 +43,15 @@ def predict_period(StartDate):
     elif Season == 'Summer':
         Season = 2
 
-    # StartWeek = StartDate.dt.week
-    StartHour = StartDate.dt.hour
-    StartDayofWeek = StartDate.dt.dayofweek
-    StartQuarter = StartDate.dt.quarter
-    StartDayofyear = StartDate.dt.dayofyear
-    StartMonth = StartDate.dt.month
-    StartYear = StartDate.dt.year
-    StartDayofMonth = StartDate.dt.day
-    StartWeekofYear = StartDate.dt.weekofyear
+    # StartWeek = StartDate.week
+    StartHour = StartDate.hour
+    StartDayofWeek = StartDate.dayofweek
+    StartQuarter = StartDate.quarter
+    StartDayofyear = StartDate.dayofyear
+    StartMonth = StartDate.month
+    StartYear = StartDate.year
+    StartDayofMonth = StartDate.day
+    StartWeekofYear = StartDate.weekofyear
     prediction_out = model_period.predict(pd.DataFrame([[StartDayofyear, StartYear, StartDayofWeek, Season, StartQuarter, StartDayofMonth, StartWeekofYear, StartMonth, StartHour]], columns=[StartDayofyear, StartYear, StartDayofWeek, Season, StartQuarter, StartDayofMonth, StartWeekofYear, StartMonth, StartHour]))
     # df['Purchase_period_Predicted'] = prediction_out
     return prediction_out
