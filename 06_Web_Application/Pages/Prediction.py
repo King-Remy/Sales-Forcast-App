@@ -77,8 +77,8 @@ p1 = ""
 
 # Making prediction and displaying data
 if make_pred:
-    p1 = pd.to_datetime(p1)         # Converting startdate input into datetime
-    purchase_period_prediction = predict_period(start_date)
+    p1 = pd.to_datetime(start_date)         # Converting startdate input into datetime
+    purchase_period_prediction = predict_period(p1)
     
     st.text_area("Predicted purchase period", value=purchase_period_prediction,height=40)
     # st.subheader(f"Predicted Species: {species_pred}")
