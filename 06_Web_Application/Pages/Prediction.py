@@ -64,7 +64,7 @@ st.markdown("Using XGBoost, make predictions on the distribution of likely sales
 st.sidebar.header("Make Prediction")
 
 # Creating defaul date for event start date input
-today =date.today()
+today = datetime.date.today()
 
 # Creating inputs and button
 event_type = st.sidebar.selectbox("Event Type:", config.keys() )
@@ -77,8 +77,8 @@ p1 = ""
 
 # Making prediction and displaying data
 if make_pred:
-    p1 = pd.to_datetime(start_date)         # Converting startdate input into datetime
-    purchase_period_prediction = predict_period(p1)
+    # p1 = datetime(start_date)         # Converting startdate input into datetime
+    purchase_period_prediction = predict_period(start_date)
     
     st.text_area("Predicted purchase period", value=purchase_period_prediction,height=40)
     # st.subheader(f"Predicted Species: {species_pred}")
