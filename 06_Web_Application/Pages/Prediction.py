@@ -67,7 +67,7 @@ st.sidebar.header("Make Prediction")
 today =date.today()
 
 # Creating inputs and button
-event_type = st.selectbox("Event Type:", config.keys() )
+event_type = st.sidebar.selectbox("Event Type:", config.keys() )
 start_date = st.sidebar.date_input("Event Start Date", today)
 weeks_to_event = st.sidebar.number_input("Promotion Start (Weeks to Event)", min_value=0, max_value=100, value=1)
 make_pred = st.sidebar.button("Predict")
