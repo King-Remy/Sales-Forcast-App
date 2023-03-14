@@ -28,10 +28,10 @@ def predict_period(StartDate):
     # dict_out = {}
     
     # Creating the Season column
-    _condition_winter = (StartDate.month>=1)&(StartDate.month<=3)
-    _condtion_spring = (StartDate.month>=4)&(StartDate.month<=6)
-    _condition_summer = (StartDate.month>=7)&(StartDate.month<=9)
-    _condition_autumn = (StartDate.month>=10)&(StartDate.month<=12)
+    _condition_winter = (StartDate.dt.month>=1)&(StartDate.dt.month<=3)
+    _condtion_spring = (StartDate.dt.month>=4)&(StartDate.dt.month<=6)
+    _condition_summer = (StartDate.dt.month>=7)&(StartDate.dt.month<=9)
+    _condition_autumn = (StartDate.dt.month>=10)&(StartDate.dt.month<=12)
     Season = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
 
     if Season == 'Autumn':
@@ -43,15 +43,15 @@ def predict_period(StartDate):
     elif Season == 'Summer':
         Season = 2
 
-    # StartWeek = StartDate.week
-    StartHour = StartDate.hour
-    StartDayofWeek = StartDate.dayofweek
-    StartQuarter = StartDate.quarter
-    StartDayofyear = StartDate.dayofyear
-    StartMonth = StartDate.month
-    StartYear = StartDate.year
-    StartDayofMonth = StartDate.day
-    StartWeekofYear = StartDate.weekofyear
+    # StartWeek = StartDate.dt.week
+    StartHour = StartDate.dt.hour
+    StartDayofWeek = StartDate.dt.dayofweek
+    StartQuarter = StartDate.dt.quarter
+    StartDayofyear = StartDate.dt.dayofyear
+    StartMonth = StartDate.dt.month
+    StartYear = StartDate.dt.year
+    StartDayofMonth = StartDate.dt.day
+    StartWeekofYear = StartDate.dt.weekofyear
     prediction_out = model_period.predict(pd.DataFrame([[StartDayofyear, StartYear, StartDayofWeek, Season, StartQuarter, StartDayofMonth, StartWeekofYear, StartMonth, StartHour]], columns=[StartDayofyear, StartYear, StartDayofWeek, Season, StartQuarter, StartDayofMonth, StartWeekofYear, StartMonth, StartHour]))
     # df['Purchase_period_Predicted'] = prediction_out
     return prediction_out
@@ -66,7 +66,7 @@ st.sidebar.header("Make Prediction")
 
 # Creating inputs and button
 event_type = st.sidebar.selectbox("Event Type:", config.keys() )
-start_date = st.sidebar.date_input("Event Start Date", datetime.date.today())
+start_date = st.sidebar.date_input("Event Start Date", datetime.date.dt.today())
 start_time = st.sidebar.time_input('Enter start time', datetime.time(0, 00))
 
 start_datetime = datetime.datetime.combine(start_date, start_time)
@@ -79,8 +79,8 @@ p1 = ""
 
 # Making prediction and displaying data
 if make_pred:
-    # p1 = datetime(start_date)         # Converting startdate input into datetime
-    purchase_period_prediction = predict_period(start_datetime)
+    p1 = pd.to_datetime(start_datetime)         # Converting startdate input into datetime
+    purchase_period_prediction = predict_period(p1)
     
     st.text_area("Predicted purchase period", value=purchase_period_prediction,height=40)
     # st.subheader(f"Predicted Species: {species_pred}")
