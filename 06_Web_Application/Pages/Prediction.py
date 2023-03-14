@@ -3,7 +3,6 @@ import numpy as np
 import json
 import sys
 import pandas as pd
-import plotly.express as px
 
 sys.path.insert(1, "06_Web_Application/make_pred.py")
 
