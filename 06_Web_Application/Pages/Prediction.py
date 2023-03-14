@@ -12,7 +12,7 @@ import os
 # df = pd.read_csv("C:\Users\KingRemy\OneDrive - University of Keele\Documents\Collaborative App Development\Coursework\Stored_dataset\client_219_153_EDA.csv", header=0, delimiter=',')
 
 # load encoded eventtype file
-config_path = os.path.abspath('.')
+config_path = os.path.abspath('..')[-3]
 
 with open(config_path + '\eventtype_encoder.json', 'r') as f:
     config = json.load(f)
