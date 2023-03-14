@@ -4,7 +4,7 @@ import json
 import sys
 import pandas as pd
 
-sys.path.insert(1, "06_Web_Application/make_pred.py")
+sys.path.insert(1, "C:\Users\KingRemy\OneDrive - University of Keele\Documents\Collaborative App Development\Coursework\Sales-Forcast-App\06_Web_Application\make_pred.py")
 
 from make_pred import predict_period
 # Setup data from csv
