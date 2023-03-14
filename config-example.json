@@ -1,9 +1,9 @@
 {
   "DEFAULT": {
-    "dataset_path": "C:/Users/KingRemy/OneDrive - University of Keele/Documents/Collaborative App Development/Sales-Forcast-App/Dataset",
+    "dataset_path": "C:/Users/KingRemy/OneDrive - University of Keele/Documents/Collaborative App Development/Coursework/Sales-Forcast-App/Dataset",
     "dataset_fname_suffix": ".csv",
     "dataset_output_fname": "client_219_153",
-    "processing_path": "C:/Users/KingRemy/OneDrive - University of Keele/Documents/Collaborative App Development/Sales-Forcast-App/Stored_dataset",
+    "processing_path": "C:/Users/KingRemy/OneDrive - University of Keele/Documents/Collaborative App Development/Coursework/Sales-Forcast-App/Stored_dataset",
     "client219_fname": "client_219",
     "client249_fname": "client_249",
     "client153_fname": "client_153",

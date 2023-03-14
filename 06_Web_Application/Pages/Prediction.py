@@ -25,10 +25,11 @@ weeks_to_event = st.sidebar.text_input("Promotion Start (Weeks to Event)")
 make_pred = st.sidebar.button("Predict")
 
 # Managing input data
-p1 = pd.to_datetime(start_date)
+p1 = ""
 
 # Making prediction and displaying data
 if make_pred:
+    p1 = pd.to_datetime(p1)         # Converting startdate input into datetime
     purchase_period_prediction = predict_period(p1)
     
     st.text_area("Predicted purchase period", value=purchase_period_prediction,height=40)
