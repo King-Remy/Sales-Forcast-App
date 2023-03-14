@@ -75,7 +75,7 @@ weeks_to_event = st.sidebar.number_input("Promotion Start (Weeks to Event)", min
 make_pred = st.sidebar.button("Predict")
 
 # Managing input data
-p1 = ""
+# p1 = ""
 
 # Making prediction and displaying data
 if make_pred:
