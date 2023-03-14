@@ -12,9 +12,8 @@ import os
 # df = pd.read_csv("C:\Users\KingRemy\OneDrive - University of Keele\Documents\Collaborative App Development\Coursework\Stored_dataset\client_219_153_EDA.csv", header=0, delimiter=',')
 
 # load encoded eventtype file
-config_path = os.path.abspath('')
 
-with open(config_path + '\eventtype_encoder.json', 'r') as f:
+with open('eventtype_encoder.json') as f:
     config = json.load(f)
 
 #Caching the model for faster loading
