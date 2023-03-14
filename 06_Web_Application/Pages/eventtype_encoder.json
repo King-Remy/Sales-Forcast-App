@@ -4,9 +4,14 @@
     "Exhibition": 2,
     "Lecture": 3,
     "Lunchtime Lecture": 4,
+    "Reading Group": 16,
+    "Research Training": 17,
+    "Seminar": 18,
+    "Short Course": 19,
+    "Summer School": 20,
+    "Workshop": 21,
     "Other Events": 5,
     "Others, Group 1": 6,
-    "Others, Group 10": 7,
     "Others, Group 2": 8,
     "Others, Group 3": 9,
     "Others, Group 4": 10,
@@ -15,10 +20,5 @@
     "Others, Group 7": 13,
     "Others, Group 8": 14,
     "Others, Group 9": 15,
-    "Reading Group": 16,
-    "Research Training": 17,
-    "Seminar": 18,
-    "Short Course": 19,
-    "Summer School": 20,
-    "Workshop": 21
+    "Others, Group 10": 7
 }
