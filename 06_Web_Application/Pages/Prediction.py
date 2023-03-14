@@ -17,14 +17,14 @@ config_path = "/app/sales-forcast-app/06_Web_Application/Pages"
 with open(config_path + '/eventtype_encoder.json', 'r') as f:
     config = json.load(f)
 
+# Loading the saved model
+model_period = xgb.XGBRegressor()
+model_period.load_model("purchase_period_model.json")
+
 #Caching the model for faster loading
 @st.cache
 
 def predict_period(StartDate):
-    # Loading the saved model
-    model_period = xgb.XGBRegressor()
-    model_period.load_model("purchase_period_model.json")
-
     # dict_out = {}
     
     # Creating the Season column
