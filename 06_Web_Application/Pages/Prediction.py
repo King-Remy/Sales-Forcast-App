@@ -19,7 +19,7 @@ with open(config_path + '/eventtype_encoder.json', 'r') as f:
 
 # Loading the saved model
 model_period = xgb.XGBRegressor()
-model_period.load_model("purchase_period_model.json")
+model_period.load_model("06_Web_Application/Pages/purchase_period_model.json")
 
 #Caching the model for faster loading
 @st.cache
