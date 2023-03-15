@@ -54,7 +54,7 @@ def predict_period(StartDate):
     StartWeekofYear = StartDate.weekofyear
     # df = 
     # st.table()
-    prediction_out = model_period.predict(pd.DataFrame([[StartDayofyear, StartYear, StartDayofWeek, Season, StartQuarter, StartDayofMonth, StartWeekofYear, StartMonth, StartHour]], columns=['StartDayofyear', 'StartYear', 'StartDayofWeek', 'Season', 'StartQuarter', 'StartDayofMonth', 'StartWeekofYear', 'StartMonth', 'StartHour']))
+    prediction_out = model_period.predict(pd.DataFrame([[Season, StartHour, StartDayofWeek, StartQuarter, StartDayofyear, StartMonth, StartYear, StartDayofMonth, StartWeekofYear]], columns=['Season', 'StartHour', 'StartDayofWeek', 'StartQuarter', 'StartDayofyear', 'StartMonth', 'StartYear', 'StartDayofMonth', 'StartWeekofYear']))
     # df['Purchase_period_Predicted'] = prediction_out
     return prediction_out
 
@@ -85,5 +85,5 @@ if make_pred:
     p1 = pd.to_datetime(conv)         # Converting startdate input into datetime
     purchase_period_prediction = predict_period(p1)
     
-    st.text_area("Predicted purchase period", value=purchase_period_prediction,height=40)
+    st.text_area("Predicted purchase period", value=purchase_period_prediction.item[0],height=40)
     # st.subheader(f"Predicted Species: {species_pred}")
