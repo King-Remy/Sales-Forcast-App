@@ -21,6 +21,9 @@ with open(config_path + '/eventtype_encoder.json', 'r') as f:
 model_period = xgb.XGBRegressor()
 model_period.load_model("06_Web_Application/Pages/purchase_period_model.json")
 
+model_sales = xgb.XGBRegressor()
+model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
+
 #Caching the model for faster loading
 @st.cache
 
@@ -58,6 +61,20 @@ def predict_period(StartDate):
     # df['Purchase_period_Predicted'] = prediction_out
     return prediction_out
 
+def predict_sales(StartDate, event_type, weeks_to_event):
+    StatusCreatedHour = StartDate.hour
+    StatusCreatedDayofWeek = StartDate.dayofweek
+    StatusCreatedQuarter = StartDate.quarter
+    StatusCreatedDayofyear = StartDate.dayofyear
+    StatusCreatedMonth = StartDate.month
+    StatusCreatedYear = StartDate.year
+    StatusCreatedDayofMonth = StartDate.day
+    StatusCreatedWeekofYear = StartDate.weekofyear
+
+    prediction_sales_out = model_sales.predict(pd.DataFrame([[StatusCreatedHour,event_type,StatusCreatedDayofWeek,StatusCreatedQuarter,StatusCreatedDayofyear,StatusCreatedMonth,StatusCreatedYear,StatusCreatedDayofMonth,StatusCreatedWeekofYear,weeks_to_event]], columns=['StatusCreatedHour','EventType','StatusCreatedDayofWeek','StatusCreatedQuarter','StatusCreatedDayofyear','StatusCreatedMonth','StatusCreatedYear','StatusCreatedDayofMonth','StatusCreatedWeekofYear','Weeks to Event']))
+
+    return prediction_sales_out
+
 # Setup title page
 st.set_page_config(page_title="Prediction")
 st.header("Prediction - Client Dataset")
@@ -87,3 +104,18 @@ if make_pred:
     
     st.success(f"Predicted purchase period {purchase_period_prediction.item(0)}")
     # st.subheader(f"Predicted Species: {species_pred}")
+
+    purchase_sales_prediction = predict_sales(p1, event_type, weeks_to_event)
+
+    sales_table = pd.DataFrame()
+
+    # Creating weeks to event date column
+    date_plus_weeks_added = start_date + timedelta(weeks=weeks_to_event)
+
+    sales_table['Weeks to Event (Date)'] = pd.date_range(start=date_plus_weeks_added, end=start_datetime)
+    sales_table['Weeks to Event (Number)'] -= weeks_to_event
+    sales_table['Number of Tickets (predicted)'] = purchase_sales_prediction.tolist()
+    sales_table['Sales (Cum_Sum)'] = sales_table['Number of Tickets (predicted)'].cumsum()
+    sales_table['Sales (Cum_Perc)'] = 100*sales_table['Sales (Cum_Sum)']/sales_table['Number of Tickets (predicted)'].sum()
+
+    st.dataframe(sales_table)
