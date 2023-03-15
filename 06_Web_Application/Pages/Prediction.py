@@ -71,6 +71,9 @@ def predict_sales(StartDate, event_type, weeks_to_event):
     StatusCreatedDayofMonth = StartDate.day
     StatusCreatedWeekofYear = StartDate.weekofyear
 
+    if event_type == config.key:
+        event_type = config.value
+
     prediction_sales_out = model_sales.predict(pd.DataFrame([[StatusCreatedHour,event_type,StatusCreatedDayofWeek,StatusCreatedQuarter,StatusCreatedDayofyear,StatusCreatedMonth,StatusCreatedYear,StatusCreatedDayofMonth,StatusCreatedWeekofYear,weeks_to_event]], columns=['StatusCreatedHour','EventType','StatusCreatedDayofWeek','StatusCreatedQuarter','StatusCreatedDayofyear','StatusCreatedMonth','StatusCreatedYear','StatusCreatedDayofMonth','StatusCreatedWeekofYear','Weeks to Event']))
 
     return prediction_sales_out
