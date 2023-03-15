@@ -71,7 +71,7 @@ def predict_sales(StartDate, event_type, weeks_to_event):
     StatusCreatedDayofMonth = StartDate.day
     StatusCreatedWeekofYear = StartDate.weekofyear
 
-    for key,value in config.items:
+    for key,value in config.items():
         if event_type == key:
             event_type = value
 
