@@ -52,7 +52,9 @@ def predict_period(StartDate):
     StartYear = StartDate.year
     StartDayofMonth = StartDate.day
     StartWeekofYear = StartDate.weekofyear
-    prediction_out = model_period.predict(pd.DataFrame([[StartDayofyear, StartYear, StartDayofWeek, Season, StartQuarter, StartDayofMonth, StartWeekofYear, StartMonth, StartHour]], columns=[StartDayofyear, StartYear, StartDayofWeek, Season, StartQuarter, StartDayofMonth, StartWeekofYear, StartMonth, StartHour]))
+    # df = 
+    # st.table()
+    prediction_out = model_period.predict(pd.DataFrame([[StartDayofyear, StartYear, StartDayofWeek, Season, StartQuarter, StartDayofMonth, StartWeekofYear, StartMonth, StartHour]], columns=['StartDayofyear', 'StartYear', 'StartDayofWeek', 'Season', 'StartQuarter', 'StartDayofMonth', 'StartWeekofYear', 'StartMonth', 'StartHour']))
     # df['Purchase_period_Predicted'] = prediction_out
     return prediction_out
 
