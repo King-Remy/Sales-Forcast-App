@@ -85,5 +85,5 @@ if make_pred:
     p1 = pd.to_datetime(conv)         # Converting startdate input into datetime
     purchase_period_prediction = predict_period(p1)
     
-    st.success(f"Predicted purchase period {purchase_period_prediction.item(0)}")
+    st.success(f"Predicted purchase period {purchase_period_prediction.item(0).round(0)}")
     # st.subheader(f"Predicted Species: {species_pred}")
