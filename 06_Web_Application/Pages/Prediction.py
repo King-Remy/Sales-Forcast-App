@@ -116,7 +116,7 @@ if make_pred:
     # Creating weeks to event date column
     date_plus_weeks_added = start_date + timedelta(weeks=weeks_to_event)
 
-    value = len(weeks_to_event)
+    value = range(weeks_to_event)
 
     sales_table['Weeks to Event (Date)'] = pd.date_range(start=date_plus_weeks_added, end=start_datetime, freq='W')
 
