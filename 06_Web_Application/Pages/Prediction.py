@@ -120,11 +120,13 @@ if make_pred:
 
     sales_table['Weeks to Event (Date)'] = pd.date_range(start=date_plus_weeks_added, end=start_datetime, freq='W')
 
+    sales_table['Weeks to Event (Number)'] = weeks_to_event
+
     for i in value:
         purchase_sales_prediction = predict_sales(p1, event_type, weeks_to_event)
 
         
-        sales_table['Weeks to Event (Number)'] -= weeks_to_event
+        sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'] - 1
         # sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'].apply(lambda x: x -1)
         sales_table['Number of Tickets (predicted)'] = purchase_sales_prediction
         sales_table['Sales (Cum_Sum)'] = sales_table['Number of Tickets (predicted)'].cumsum()
