@@ -25,7 +25,7 @@ model_sales = xgb.XGBRegressor()
 model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
 
 #Caching the model for faster loading
-@st.cache
+@st.cache_resource
 
 def predict_period(StartDate):
     # dict_out = {}
