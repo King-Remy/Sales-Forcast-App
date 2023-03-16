@@ -116,9 +116,9 @@ if make_pred:
     # Creating weeks to event date column
     date_plus_weeks_added = start_date + timedelta(weeks=weeks_to_event)
 
-    sales_table['Weeks to Event (Date)'] = pd.date_range(start=date_plus_weeks_added, end=start_datetime)
+    sales_table['Weeks to Event (Date)'] = pd.date_range(start=date_plus_weeks_added, end=start_datetime, freq='1W')
     sales_table['Weeks to Event (Number)'] = weeks_to_event
-    sales_table['Weeks to Event (Number)'] - 1
+    sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'].apply(lambda x: x -1)
     sales_table['Number of Tickets (predicted)'] = purchase_sales_prediction.tolist()
     sales_table['Sales (Cum_Sum)'] = sales_table['Number of Tickets (predicted)'].cumsum()
     sales_table['Sales (Cum_Perc)'] = 100*sales_table['Sales (Cum_Sum)']/sales_table['Number of Tickets (predicted)'].sum()
