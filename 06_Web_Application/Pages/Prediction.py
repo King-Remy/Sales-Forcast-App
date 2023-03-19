@@ -170,6 +170,7 @@ if make_pred:
 
     st.success(f"Predicted purchase period {purchase_period_prediction}")
 
+    st.success(f"Predicted purchase period {sales_weeks_df}")
     # st.dataframe(sales_weeks_pred, use_container_width=True)
     # st.subheader(f"Predicted Species: {species_pred}")
 
