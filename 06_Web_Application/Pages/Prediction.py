@@ -111,12 +111,13 @@ make_pred = st.sidebar.button("Predict")
 if make_pred:
     with st.spinner('Generating predictions. Please wait....'):
         time.sleep(1)
-    # conv = str(start_datetime)
+    
     
 
     # Generating data frame
-    Client = pd.DataFrame.from_dict([{"StartDate": start_datetime}])
-    Client["StartDate"] = pd.to_datetime(start_datetime, errors='coerce')                # converting created Event Startdate column with users StartDate to datetime format
+    conv = str(start_datetime)
+    Client = pd.DataFrame.from_dict([{"StartDate": conv}])
+    Client["StartDate"] = pd.to_datetime(conv, errors='coerce')                # converting created Event Startdate column with users StartDate to datetime format
 
     purchase_period_prediction = predict_period(Client)
     
