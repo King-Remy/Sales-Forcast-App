@@ -48,22 +48,21 @@ def addSeasonCode(df):
 
     return df
 
-def event_startdate_features(StartDate_df):
-    StartDate_df = StartDate_df.copy()
-    StartDate_df = addSeasonCode(StartDate_df)
-    StartDate_df['StartHour'] = StartDate_df.StartDate.dt.hour
-    StartDate_df['StartDayofWeek'] = StartDate_df.StartDate.dt.dayofweek
-    StartDate_df['StartQuarter'] = StartDate_df.StartDate.dt.quarter
-    StartDate_df['StartDayofyear'] = StartDate_df.StartDate.dt.dayofyear
-    StartDate_df['StartMonth'] = StartDate_df.StartDate.dt.month
-    StartDate_df['StartYear'] = StartDate_df.StartDate.dt.year
-    StartDate_df['StartDayofMonth'] = StartDate_df.StartDate.dt.day
-    StartDate_df['StartWeekofYear'] = StartDate_df.StartDate.dt.weekofyear
-    StartDate_df['StartDate'] = StartDate_df.StartDate.dt.date
-    return StartDate_df
+def event_startdate_features(df, StartDate):
+    StartDate = StartDate.copy()
+    StartDate = addSeasonCode(StartDate)
+    StartDate['StartHour'] = StartDate.dt.hour
+    StartDate['StartDayofWeek'] = StartDate.dt.dayofweek
+    StartDate['StartQuarter'] = StartDate.dt.quarter
+    StartDate['StartDayofyear'] = StartDate.dt.dayofyear
+    StartDate['StartMonth'] = StartDate.dt.month
+    StartDate['StartYear'] = StartDate.dt.year
+    StartDate['StartDayofMonth'] = StartDate.dt.day
+    StartDate['StartWeekofYear'] = StartDate.dt.weekofyear
+    return StartDate
 
-def predict_period(StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
-    df2 = event_startdate_features(Client).drop(labels=['StartDate', 'StartSeason'], axis=1)
+def predict_period(df, StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
+    df2 = event_startdate_features(Client, StartDate).drop(labels=['StartSeason'], axis=1)
     period_pred_out = model_period.predict(df2)
     # df['Purchase_period_Predicted'] = prediction_out
     return round(period_pred_out[0])
@@ -119,10 +118,12 @@ if make_pred:
     # Generating data frame
     # conv = str(start_datetime)
     # p1 = pd.to_datetime(start_datetime, utc=True)  
-    Client = pd.DataFrame.from_dict([{"StartDate": start_datetime}])
-    Client["StartDate"] = pd.to_datetime(start_datetime, format='%Y-%m-%d %H:%M:%S')              # converting created Event Startdate column with users StartDate to datetime format
+    # Client = pd.DataFrame.from_dict([{"StartDate": start_datetime}])
+    # Client["StartDate"] = pd.to_datetime(start_datetime, format='%Y-%m-%d %H:%M:%S')              # converting created Event Startdate column with users StartDate to datetime format
 
-    purchase_period_prediction = predict_period(Client)
+    Client = pd.DataFrame()
+
+    purchase_period_prediction = predict_period(Client, start_datetime)
     
     st.success(f"Predicted purchase period {purchase_period_prediction}")
     # st.subheader(f"Predicted Species: {species_pred}")
