@@ -28,25 +28,15 @@ model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
 #Caching the model for faster loading
 @st.cache_resource
 
-def addSeasonCode(StartDate):
-    # Creating the Season column
-    _condition_winter = (StartDate.month>=1)&(StartDate.month<=3)
-    _condtion_spring = (StartDate.month>=4)&(StartDate.month<=6)
-    _condition_summer = (StartDate.month>=7)&(StartDate.month<=9)
-    _condition_autumn = (StartDate.month>=10)&(StartDate.month<=12)
-    
-    # df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
-    StartSeason = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
-    eventSeasonCode = []
-    for row in StartSeason:
-        if row == 'Autumn': eventSeasonCode.append(0)
-        if row == 'Winter': eventSeasonCode.append(3)
-        if row == 'Spring': eventSeasonCode.append(1)
-        if row == 'Summer': eventSeasonCode.append(2)
 
-    # df['Season'] = StartSeason
 
-    return eventSeasonCode
+
+def predict_period(df, StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
+    df2 = event_startdate_features(Client, p1).drop(labels=['StartSeason'], axis=1)
+    st.success(f"{df2}")
+    period_pred_out = model_period.predict(df2)
+    # df['Purchase_period_Predicted'] = prediction_out
+    return period_pred_out.item(0)
 
 def event_startdate_features(df, StartDate):
     df = df.copy()
@@ -72,13 +62,25 @@ def event_startdate_features(df, StartDate):
     # df['StartWeekofYear'] = StartDate.weekofyear
     return df
 
+def addSeasonCode(StartDate):
+    # Creating the Season column
+    _condition_winter = (StartDate.month>=1)&(StartDate.month<=3)
+    _condtion_spring = (StartDate.month>=4)&(StartDate.month<=6)
+    _condition_summer = (StartDate.month>=7)&(StartDate.month<=9)
+    _condition_autumn = (StartDate.month>=10)&(StartDate.month<=12)
+    
+    # df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
+    StartSeason = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
+    eventSeasonCode = []
+    for row in StartSeason:
+        if row == 'Autumn': eventSeasonCode.append(0)
+        if row == 'Winter': eventSeasonCode.append(3)
+        if row == 'Spring': eventSeasonCode.append(1)
+        if row == 'Summer': eventSeasonCode.append(2)
 
-def predict_period(df, StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
-    df2 = event_startdate_features(df, StartDate).drop(labels=['StartSeason'], axis=1)
-    st.success(f"{df2}")
-    period_pred_out = model_period.predict(df2)
-    # df['Purchase_period_Predicted'] = prediction_out
-    return period_pred_out.item(0)
+    # df['Season'] = StartSeason
+
+    return eventSeasonCode
 
 def predict_sales(StartDate, event_type, weeks_to_event):
     StatusCreatedHour = StartDate.hour
