@@ -120,7 +120,7 @@ if make_pred:
 
     purchase_period_prediction = predict_period(Client)
     
-    st.success(f"Predicted purchase period {purchase_period_prediction.item(0)}")
+    st.success(f"Predicted purchase period {purchase_period_prediction}")
     # st.subheader(f"Predicted Species: {species_pred}")
 
     
