@@ -97,9 +97,8 @@ st.sidebar.header("Make Prediction")
 # Creating inputs and button
 event_type = st.sidebar.selectbox("Event Type:", config.keys() )
 start_date = st.sidebar.date_input("Event Start Date", datetime.date.today())
-start_time = st.sidebar.time_input('Enter start time', datetime.time(0, 00))
 
-start_datetime = datetime.datetime.combine(start_date, start_time)
+start_datetime = datetime.datetime.combine(start_date, st.sidebar.time_input('Enter start time', datetime.time(0, 00)))
 
 st.success(f"{start_datetime}")
 
