@@ -118,7 +118,7 @@ if make_pred:
 
     # Generating data frame
     conv = str(start_datetime)
-    p1 = pd.to_datetime(conv)
+    p1 = pd.to_datetime(conv, errors='coerce')
     Client = pd.DataFrame.from_dict([{"StartDate": p1}])
     # Client["StartDate"] = pd.to_datetime(conv)                # converting created Event Startdate column with users StartDate to datetime format
 
