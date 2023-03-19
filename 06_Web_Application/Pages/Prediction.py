@@ -44,9 +44,9 @@ def addSeasonCode(StartDate):
     #     if row == 'Spring': eventSeasonCode.append(1)
     #     if row == 'Summer': eventSeasonCode.append(2)
 
-    df['Season'] = StartSeason
+    # df['Season'] = StartSeason
 
-    return df
+    return StartSeason
 
 def event_startdate_features(df, StartDate):
     df = df.copy()
