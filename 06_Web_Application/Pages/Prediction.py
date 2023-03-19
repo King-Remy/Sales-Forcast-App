@@ -60,7 +60,7 @@ def eventTypeConversion(df, event_type):
 def event_startdate_features(StartDate_df):
     StartDate_df = StartDate_df.copy()
     StartDate_df = addSeasonCode(StartDate_df)
-    StartDate_df['StartHour'] = StartDate_df.StartDate.dt.hour
+    # StartDate_df['StartHour'] = StartDate_df.StartDate.dt.hour
     StartDate_df['StartDayofWeek'] = StartDate_df.StartDate.dt.dayofweek
     StartDate_df['StartQuarter'] = StartDate_df.StartDate.dt.quarter
     StartDate_df['StartDayofyear'] = StartDate_df.StartDate.dt.dayofyear
@@ -73,7 +73,7 @@ def event_startdate_features(StartDate_df):
 
 def booking_startdate_feautre(booking_dates_df, event_type):
     booking_dates_df = booking_dates_df.copy()
-    booking_dates_df['BookedHour'] = booking_dates_df.StatusCreatedDate.dt.hour
+    # booking_dates_df['BookedHour'] = booking_dates_df.StatusCreatedDate.dt.hour
     booking_dates_df = eventTypeConversion(booking_dates_df, event_type)
     booking_dates_df['BookedDayofWeek'] = booking_dates_df.StatusCreatedDate.dt.dayofweek
     booking_dates_df['BookedQuarter'] = booking_dates_df.StatusCreatedDate.dt.quarter
@@ -160,7 +160,7 @@ if make_pred:
     # Generating data frame
     # conv = str(start_datetime)
     # p1 = pd.to_datetime(start_datetime, utc=True)  
-    Client = pd.DataFrame.from_dict([{"StartDate": start_datetime}])
+    Client = pd.DataFrame.from_dict([{"StartDate": start_date}])
     Client["StartDate"] = pd.to_datetime(Client["StartDate"],errors='coerce')              # converting created Event Startdate column with users StartDate to datetime format
 
     purchase_period_prediction = predict_period(Client)
