@@ -102,7 +102,7 @@ start_time = st.sidebar.time_input('Enter start time', datetime.time(0, 00))
 
 start_datetime = datetime.datetime.combine(start_date, start_time)
 
-st.success(f"{start_datetime}")
+st.success(f"{start_datetime.dayofweek}")
 
 weeks_to_event = st.sidebar.number_input("Booking Period (Weeks to EventDate)", min_value=0, max_value=100, value=1)
 make_pred = st.sidebar.button("Predict")
