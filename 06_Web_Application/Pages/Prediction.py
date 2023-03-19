@@ -61,8 +61,10 @@ def event_startdate_features(df, StartDate):
     df['StartWeekofYear'] = StartDate.weekofyear
     return df
 
+
 def predict_period(df, StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
     df2 = event_startdate_features(df, StartDate).drop(labels=['StartSeason'], axis=1)
+    st.success(f"{df2}")
     period_pred_out = model_period.predict(df2)
     # df['Purchase_period_Predicted'] = prediction_out
     return period_pred_out.item(0)
