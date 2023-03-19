@@ -50,16 +50,16 @@ def addSeasonCode(df):
 
 def event_startdate_features(df, StartDate):
     # StartDate = StartDate.copy()
-    StartDate = addSeasonCode(StartDate)
-    StartDate['StartHour'] = StartDate.dt.hour
-    StartDate['StartDayofWeek'] = StartDate.dt.dayofweek
-    StartDate['StartQuarter'] = StartDate.dt.quarter
-    StartDate['StartDayofyear'] = StartDate.dt.dayofyear
-    StartDate['StartMonth'] = StartDate.dt.month
-    StartDate['StartYear'] = StartDate.dt.year
-    StartDate['StartDayofMonth'] = StartDate.dt.day
-    StartDate['StartWeekofYear'] = StartDate.dt.weekofyear
-    return StartDate
+    df = addSeasonCode(StartDate)
+    df['StartHour'] = StartDate.dt.hour
+    df['StartDayofWeek'] = StartDate.dt.dayofweek
+    df['StartQuarter'] = StartDate.dt.quarter
+    df['StartDayofyear'] = StartDate.dt.dayofyear
+    df['StartMonth'] = StartDate.dt.month
+    df['StartYear'] = StartDate.dt.year
+    df['StartDayofMonth'] = StartDate.dt.day
+    df['StartWeekofYear'] = StartDate.dt.weekofyear
+    return df
 
 def predict_period(df, StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
     df2 = event_startdate_features(Client, StartDate).drop(labels=['StartSeason'], axis=1)
