@@ -30,10 +30,10 @@ model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
 
 def addSeasonCode(df):
     # Creating the Season column
-    _condition_winter = (df.StartDate.month>=1)&(df.StartDate.month<=3)
-    _condtion_spring = (df.StartDate.month>=4)&(df.StartDate.month<=6)
-    _condition_summer = (df.StartDate.month>=7)&(df.StartDate.month<=9)
-    _condition_autumn = (df.StartDate.month>=10)&(df.StartDate.month<=12)
+    _condition_winter = (df.StartDate.dt.month>=1)&(df.StartDate.dt.month<=3)
+    _condtion_spring = (df.StartDate.dt.month>=4)&(df.StartDate.dt.month<=6)
+    _condition_summer = (df.StartDate.dt.month>=7)&(df.StartDate.dt.month<=9)
+    _condition_autumn = (df.StartDate.dt.month>=10)&(df.StartDate.dt.month<=12)
     
     df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
 
@@ -116,7 +116,7 @@ if make_pred:
 
     # Generating data frame
     Client = pd.DataFrame.from_dict([{"StartDate": start_datetime}])
-    Client["StartDate"] = pd.to_datetime(start_datetime, errors='coerce')                # converting created Event Startdate column with users StartDate to datetime format
+    Client["StartDate"] = pd.to_datetime(Client["StartDate"], errors='coerce')                # converting created Event Startdate column with users StartDate to datetime format
 
     purchase_period_prediction = predict_period(Client)
     
