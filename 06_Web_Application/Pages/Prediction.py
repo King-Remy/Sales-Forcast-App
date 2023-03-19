@@ -30,10 +30,10 @@ model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
 
 def addSeasonCode(df,StartDate):
     # Creating the Season column
-    _condition_winter = (StartDate.dt.month>=1)&(StartDate.dt.month<=3)
-    _condtion_spring = (StartDate.dt.month>=4)&(StartDate.dt.month<=6)
-    _condition_summer = (StartDate.dt.month>=7)&(StartDate.dt.month<=9)
-    _condition_autumn = (StartDate.dt.month>=10)&(StartDate.dt.month<=12)
+    _condition_winter = (StartDate.month>=1)&(StartDate.month<=3)
+    _condtion_spring = (StartDate.month>=4)&(StartDate.month<=6)
+    _condition_summer = (StartDate.month>=7)&(StartDate.month<=9)
+    _condition_autumn = (StartDate.month>=10)&(StartDate.month<=12)
     
     df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
 
@@ -51,14 +51,14 @@ def addSeasonCode(df,StartDate):
 def event_startdate_features(df, StartDate):
     # StartDate = StartDate.copy()
     df = addSeasonCode(df, StartDate)
-    df['StartHour'] = StartDate.dt.hour
-    df['StartDayofWeek'] = StartDate.dt.dayofweek
-    df['StartQuarter'] = StartDate.dt.quarter
-    df['StartDayofyear'] = StartDate.dt.dayofyear
-    df['StartMonth'] = StartDate.dt.month
-    df['StartYear'] = StartDate.dt.year
-    df['StartDayofMonth'] = StartDate.dt.day
-    df['StartWeekofYear'] = StartDate.dt.weekofyear
+    df['StartHour'] = StartDate.hour
+    df['StartDayofWeek'] = StartDate.dayofweek
+    df['StartQuarter'] = StartDate.quarter
+    df['StartDayofyear'] = StartDate.dayofyear
+    df['StartMonth'] = StartDate.month
+    df['StartYear'] = StartDate.year
+    df['StartDayofMonth'] = StartDate.day
+    df['StartWeekofYear'] = StartDate.weekofyear
     return df
 
 def predict_period(df, StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
