@@ -44,7 +44,7 @@ def addSeasonCode(df):
         if row == 'Spring': eventSeasonCode.append(1)
         if row == 'Summer': eventSeasonCode.append(2)
 
-    df['SeasonCode'] = eventSeasonCode
+    df['Season'] = eventSeasonCode
 
     return df
 
