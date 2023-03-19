@@ -37,20 +37,6 @@ def addSeasonCode(StartDate):
     
     # df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
     StartSeason = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
-    # eventSeasonCode = []
-    # for row in df['StartSeason']:
-    #     if row == 'Autumn': eventSeasonCode.append(0)
-    #     if row == 'Winter': eventSeasonCode.append(3)
-    #     if row == 'Spring': eventSeasonCode.append(1)
-    #     if row == 'Summer': eventSeasonCode.append(2)
-
-    # df['Season'] = StartSeason
-
-    return StartSeason
-
-def event_startdate_features(df, StartDate):
-    df = df.copy()
-    StartSeason = addSeasonCode(StartDate)
     eventSeasonCode = []
     for row in StartSeason:
         if row == 'Autumn': eventSeasonCode.append(0)
@@ -58,7 +44,15 @@ def event_startdate_features(df, StartDate):
         if row == 'Spring': eventSeasonCode.append(1)
         if row == 'Summer': eventSeasonCode.append(2)
 
-    rows_to_append = pd.DataFrame([{'Season': eventSeasonCode,
+    # df['Season'] = StartSeason
+
+    return eventSeasonCode
+
+def event_startdate_features(df, StartDate):
+    df = df.copy()
+    StartSeason = addSeasonCode(StartDate)
+
+    rows_to_append = pd.DataFrame([{'Season': StartSeason,
                                     'StartHour': StartDate.hour,
                                     'StartDayofWeek': StartDate.dayofweek,
                                     'StartQuarter': StartDate.quarter,
