@@ -51,15 +51,15 @@ def addSeasonCode(df):
 def event_startdate_features(StartDate_df):
     StartDate_df = StartDate_df.copy()
     StartDate_df = addSeasonCode(StartDate_df)
-    StartDate_df['StartHour'] = StartDate_df.StartDate.dt.hour
-    StartDate_df['StartDayofWeek'] = StartDate_df.StartDate.dt.dayofweek
-    StartDate_df['StartQuarter'] = StartDate_df.StartDate.dt.quarter
-    StartDate_df['StartDayofyear'] = StartDate_df.StartDate.dt.dayofyear
-    StartDate_df['StartMonth'] = StartDate_df.StartDate.dt.month
-    StartDate_df['StartYear'] = StartDate_df.StartDate.dt.year
-    StartDate_df['StartDayofMonth'] = StartDate_df.StartDate.dt.day
-    StartDate_df['StartWeekofYear'] = StartDate_df.StartDate.dt.weekofyear
-    StartDate_df['StartDate'] = StartDate_df.StartDate.dt.date
+    StartDate_df['StartHour'] = StartDate_df.StartDate.hour
+    StartDate_df['StartDayofWeek'] = StartDate_df.StartDate.dayofweek
+    StartDate_df['StartQuarter'] = StartDate_df.StartDate.quarter
+    StartDate_df['StartDayofyear'] = StartDate_df.StartDate.dayofyear
+    StartDate_df['StartMonth'] = StartDate_df.StartDate.month
+    StartDate_df['StartYear'] = StartDate_df.StartDate.year
+    StartDate_df['StartDayofMonth'] = StartDate_df.StartDate.day
+    StartDate_df['StartWeekofYear'] = StartDate_df.StartDate.weekofyear
+    StartDate_df['StartDate'] = StartDate_df.StartDate.date
     return StartDate_df
 
 def predict_period(StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
@@ -120,7 +120,7 @@ if make_pred:
     # conv = str(start_datetime)
     # p1 = pd.to_datetime(start_datetime, utc=True)  
     Client = pd.DataFrame.from_dict([{"StartDate": start_datetime}])
-    Client["StartDate"] = pd.to_datetime(Client["StartDate"],infer_datetime_format=True, utc=True)              # converting created Event Startdate column with users StartDate to datetime format
+    Client["StartDate"] = pd.to_datetime(start_datetime)              # converting created Event Startdate column with users StartDate to datetime format
 
     purchase_period_prediction = predict_period(Client)
     
