@@ -48,6 +48,15 @@ def addSeasonCode(df):
 
     return df
 
+def eventTypeConversion(df, event_type):
+    
+    eventTypeCode = []
+    for key,value in config.items():
+        if event_type == key: eventTypeCode.append(value)
+    
+    df['EventType'] = eventTypeCode
+    return df
+
 def event_startdate_features(StartDate_df):
     StartDate_df = StartDate_df.copy()
     StartDate_df = addSeasonCode(StartDate_df)
@@ -62,29 +71,61 @@ def event_startdate_features(StartDate_df):
     StartDate_df['StartDate'] = StartDate_df.StartDate.dt.date
     return StartDate_df
 
+def booking_startdate_feautre(booking_dates_df, event_type):
+    booking_dates_df = booking_dates_df.copy()
+    booking_dates_df['BookedHour'] = booking_dates_df.StatusCreatedDate.dt.hour
+    booking_dates_df = eventTypeConversion(booking_dates_df, event_type)
+    booking_dates_df['BookedDayofWeek'] = booking_dates_df.StatusCreatedDate.dt.dayofweek
+    booking_dates_df['BookedQuarter'] = booking_dates_df.StatusCreatedDate.dt.quarter
+    booking_dates_df['BookedDayofyear'] = booking_dates_df.StatusCreatedDate.dt.dayofyear
+    booking_dates_df['BookedMonth'] = booking_dates_df.StatusCreatedDate.dt.month
+    booking_dates_df['BookedYear'] = booking_dates_df.StatusCreatedDate.dt.year
+    booking_dates_df['BookedDayofMonth'] = booking_dates_df.StatusCreatedDate.dt.day
+    booking_dates_df['BookedWeekofYear'] = booking_dates_df.StatusCreatedDate.dt.weekofyear
+    booking_dates_df['BookedDate'] = booking_dates_df.StatusCreatedDate.dt.date
+
+    return booking_dates_df
+
+
 def predict_period(StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
     df2 = event_startdate_features(Client).drop(labels=['StartDate', 'StartSeason'], axis=1)
     period_pred_out = model_period.predict(df2)
     # df['Purchase_period_Predicted'] = prediction_out
     return round(period_pred_out[0])
 
-def predict_sales(StartDate, event_type, weeks_to_event):
-    StatusCreatedHour = StartDate.hour
-    StatusCreatedDayofWeek = StartDate.dayofweek
-    StatusCreatedQuarter = StartDate.quarter
-    StatusCreatedDayofyear = StartDate.dayofyear
-    StatusCreatedMonth = StartDate.month
-    StatusCreatedYear = StartDate.year
-    StatusCreatedDayofMonth = StartDate.day
-    StatusCreatedWeekofYear = StartDate.weekofyear
+def ticket_sales_features(StartDate, purchase_period, event_type):
+    freq = '-1W-SUN'
+    weeks = list(range(purchase_period)) 
 
-    for key,value in config.items():
-        if event_type == key:
-            event_type = value
+    period = pd.date_range(StartDate, period=purchase_period, freq=freq)
+    period = pd.DataFrame(reversed(period))
+    period['StartDate'] = StartDate
+    period.columns =['StatusCreatedDate', 'StartDate']
+    period = event_startdate_features(period, event_type)
+    period['Weeks_to_Event'] = weeks
+    return period
 
-    prediction_sales_out = model_sales.predict(pd.DataFrame([[StatusCreatedHour,event_type,StatusCreatedDayofWeek,StatusCreatedQuarter,StatusCreatedDayofyear,StatusCreatedMonth,StatusCreatedYear,StatusCreatedDayofMonth,StatusCreatedWeekofYear,weeks_to_event]], columns=['StatusCreatedHour','StartType','StatusCreatedDayofWeek','StatusCreatedQuarter','StatusCreatedDayofyear','StatusCreatedMonth','StatusCreatedYear','StatusCreatedDayofMonth','StatusCreatedWeekofYear','Weeks to Event']))
+    
 
-    return prediction_sales_out
+def predictWeeklySales(df):
+    df2 = df.drop(labels=['StatusCreatedDate', 'StartDate'], axis=1)
+    weekly_sales_pred_out = model_sales.predict(df2)
+    weekly_sales_pred = pd.DataFrame()
+    weekly_sales_pred = df['StatusCreatedDate'].dt.date
+
+    predictions = []
+    index = len(weekly_sales_pred_out) + 1
+    for row in weekly_sales_pred_out:
+        if row < 0:
+            predictions.append(abs(round(row)))
+        else:
+            predictions.append(abs(round(row)))
+    
+    weekly_sales_pred['Sales_Prediction'] = predictions
+    weekly_sales_pred['Cummulative_Prediction'] = pd.Series(predictions).cumsum()
+    weekly_sales_pred['Cummulative Booking %'] = round((weekly_sales_pred['Cummulative_Prediction'] / weekly_sales_pred['Sales_Prediction'] .sum()) * 100, 0)
+
+    return weekly_sales_pred
 
 # Setup title page
 st.set_page_config(page_title="Prediction")
@@ -124,6 +165,9 @@ if make_pred:
 
     purchase_period_prediction = predict_period(Client)
     
+    df_weeks = pd.DataFrame(ticket_sales_features(pd.to_datetime(Client["StartDate"],errors='coerce'), purchase_period_prediction,event_type))
+
+
     st.success(f"Predicted purchase period {purchase_period_prediction}")
     # st.subheader(f"Predicted Species: {species_pred}")
 
