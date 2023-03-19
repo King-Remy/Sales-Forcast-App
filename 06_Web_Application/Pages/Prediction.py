@@ -62,8 +62,8 @@ def event_startdate_features(dfs):
     dfs['StartDate'] = dfs.StartDate.dt.date
     return dfs
 
-def predict_period(StartDate):
-    df2 = event_startdate_features(Client).drop(labels=['StartDate', 'EventSeason'], axis=1)
+def predict_period(StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
+    df2 = event_startdate_features(Client).drop(labels=['StartDate', 'StartSeason'], axis=1)
     period_pred_out = model_period.predict(df2)
     # df['Purchase_period_Predicted'] = prediction_out
     return round(period_pred_out[0])
