@@ -51,7 +51,7 @@ def addSeasonCode(df):
 def event_startdate_features(StartDate_df):
     StartDate_df = StartDate_df.copy()
     StartDate_df = addSeasonCode(StartDate_df)
-    StartDate_df['StartHour'] = StartDate_df.StartDate.hour
+    StartDate_df['StartHour'] = StartDate_df.StartDate.dt.hour
     StartDate_df['StartDayofWeek'] = StartDate_df.StartDate.dayofweek
     StartDate_df['StartQuarter'] = StartDate_df.StartDate.quarter
     StartDate_df['StartDayofyear'] = StartDate_df.StartDate.dayofyear
