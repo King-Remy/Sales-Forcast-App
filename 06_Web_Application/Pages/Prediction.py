@@ -95,7 +95,7 @@ def predict_period(StartDate):          # This function takes in a DatFrame with
 
 def ticket_sales_features(StartDate, purchase_period, event_type):
     freq = '-1W-SUN'
-    weeks = list(range(purchase_period)) 
+    weeks = list(range(purchase_period) + 1) 
 
     period = pd.date_range(StartDate, period=purchase_period, freq=freq)
     period = pd.DataFrame(reversed(period))
@@ -114,7 +114,7 @@ def predictWeeklySales(df):
     weekly_sales_pred = df['StatusCreatedDate'].dt.date
 
     predictions = []
-    index = len(weekly_sales_pred_out) + 1
+    # index = len(weekly_sales_pred_out) + 1
     for row in weekly_sales_pred_out:
         if row < 0:
             predictions.append(abs(round(row)))
