@@ -35,35 +35,52 @@ def addSeasonCode(df,StartDate):
     _condition_summer = (StartDate.month>=7)&(StartDate.month<=9)
     _condition_autumn = (StartDate.month>=10)&(StartDate.month<=12)
     
-    df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
+    # df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
+    StartSeason = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
+    # eventSeasonCode = []
+    # for row in df['StartSeason']:
+    #     if row == 'Autumn': eventSeasonCode.append(0)
+    #     if row == 'Winter': eventSeasonCode.append(3)
+    #     if row == 'Spring': eventSeasonCode.append(1)
+    #     if row == 'Summer': eventSeasonCode.append(2)
 
-    eventSeasonCode = []
-    for row in df['StartSeason']:
-        if row == 'Autumn': eventSeasonCode.append(0)
-        if row == 'Winter': eventSeasonCode.append(3)
-        if row == 'Spring': eventSeasonCode.append(1)
-        if row == 'Summer': eventSeasonCode.append(2)
-
-    df['Season'] = eventSeasonCode
+    df['Season'] = StartSeason
 
     return df
 
 def event_startdate_features(df, StartDate):
     df = df.copy()
-    df = addSeasonCode(df, StartDate)
-    df['StartHour'] = StartDate.hour
-    df['StartDayofWeek'] = StartDate.dayofweek
-    df['StartQuarter'] = StartDate.quarter
-    df['StartDayofyear'] = StartDate.dayofyear
-    df['StartMonth'] = StartDate.month
-    df['StartYear'] = StartDate.year
-    df['StartDayofMonth'] = StartDate.day
-    df['StartWeekofYear'] = StartDate.weekofyear
+    StartSeason = addSeasonCode(StartDate)
+    eventSeasonCode = []
+    for row in StartSeason:
+        if row == 'Autumn': eventSeasonCode.append(0)
+        if row == 'Winter': eventSeasonCode.append(3)
+        if row == 'Spring': eventSeasonCode.append(1)
+        if row == 'Summer': eventSeasonCode.append(2)
+
+    rows_to_append = pd.DataFrame([{'Season': eventSeasonCode,
+                                    'StartHour': StartDate.hour,
+                                    'StartDayofWeek': StartDate.dayofweek,
+                                    'StartQuarter': StartDate.quarter,
+                                    'StartDayofyear': StartDate.dayofyear,
+                                    'StartMonth': StartDate.month,
+                                    'StartYear': StartDate.year,
+                                    'StartDayofMonth': StartDate.day,
+                                    'StartWeekofYear': StartDate.weekofyear}])
+    df = pd.concat([df, rows_to_append])
+    # df['StartHour'] = StartDate.hour
+    # df['StartDayofWeek'] = StartDate.dayofweek
+    # df['StartQuarter'] = StartDate.quarter
+    # df['StartDayofyear'] = StartDate.dayofyear
+    # df['StartMonth'] = StartDate.month
+    # df['StartYear'] = StartDate.year
+    # df['StartDayofMonth'] = StartDate.day
+    # df['StartWeekofYear'] = StartDate.weekofyear
     return df
 
 
 def predict_period(df, StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
-    df2 = event_startdate_features(df, StartDate).drop(labels=['StartSeason'], axis=1)
+    df2 = event_startdate_features(Client, p1).drop(labels=['StartSeason'], axis=1)
     st.success(f"{df2}")
     period_pred_out = model_period.predict(df2)
     # df['Purchase_period_Predicted'] = prediction_out
@@ -128,7 +145,7 @@ if make_pred:
                                    'StartMonth','StartYear','StartDayofMonth','StartWeekofYear'])
     Client.empty
 
-    st.success(f"{Client}")
+    # st.success(f"{Client}")
     purchase_period_prediction = predict_period(Client, p1)
     
     st.success(f"Predicted purchase period {purchase_period_prediction}")
