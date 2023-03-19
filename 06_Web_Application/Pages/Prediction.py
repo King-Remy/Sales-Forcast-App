@@ -67,7 +67,7 @@ def event_startdate_features(StartDate_df):
     StartDate_df['StartMonth'] = StartDate_df.StartDate.dt.month
     StartDate_df['StartYear'] = StartDate_df.StartDate.dt.year
     StartDate_df['StartDayofMonth'] = StartDate_df.StartDate.dt.day
-    StartDate_df['StartWeekofYear'] = StartDate_df.StartDate.dt.weekofyear
+    StartDate_df['StartWeekofYear'] = np.uint32(np.int32(StartDate_df.StartDate.dt.isocalendar().week))
     StartDate_df['StartDate'] = StartDate_df.StartDate.dt.date
     return StartDate_df
 
@@ -137,7 +137,7 @@ st.sidebar.header("Make Prediction")
 
 # Creating inputs and button
 event_type = st.sidebar.selectbox("Event Type:", config.keys() )
-start_date = st.sidebar.date_input("Event Start Date", datetime.date.today())
+start_date = st.sidebar.date_input("Event Start Date", datetime.date(2023, 4, 1))
 start_time = dt.datetime.strptime('0000','%H%M').time()
 
 start_datetime = datetime.datetime.combine(start_date, start_time)
@@ -161,7 +161,7 @@ if make_pred:
     # conv = str(start_datetime)
     # p1 = pd.to_datetime(start_datetime, utc=True)  
     Client = pd.DataFrame.from_dict([{"StartDate": start_date}])
-    Client["StartDate"] = pd.to_datetime(Client["StartDate"],errors='coerce')              # converting created Event Startdate column with users StartDate to datetime format
+    Client["StartDate"] = pd.to_datetime(start_date,errors='coerce')              # converting created Event Startdate column with users StartDate to datetime format
 
     purchase_period_prediction = predict_period(Client)
     
