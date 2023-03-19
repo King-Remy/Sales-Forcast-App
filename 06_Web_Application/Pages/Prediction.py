@@ -65,7 +65,7 @@ def predict_period(df, StartDate):          # This function takes in a DatFrame 
     df2 = event_startdate_features(Client, StartDate).drop(labels=['StartSeason'], axis=1)
     period_pred_out = model_period.predict(df2)
     # df['Purchase_period_Predicted'] = prediction_out
-    return period_pred_out.item(0)
+    return period_pred_out
 
 def predict_sales(StartDate, event_type, weeks_to_event):
     StatusCreatedHour = StartDate.hour
@@ -125,7 +125,7 @@ if make_pred:
 
     purchase_period_prediction = predict_period(Client, p1)
     
-    st.success(f"Predicted purchase period {purchase_period_prediction}")
+    st.success(f"Predicted purchase period {purchase_period_prediction.item(0)}")
     # st.subheader(f"Predicted Species: {species_pred}")
 
     
