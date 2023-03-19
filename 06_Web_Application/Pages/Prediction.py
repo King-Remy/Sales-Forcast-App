@@ -97,7 +97,7 @@ def ticket_sales_features(StartDate, purchase_period, event_type):
     freq = '-1W-SUN'
     weeks = list(range(purchase_period + 1))
 
-    period = pd.date_range(StartDate, period=purchase_period, freq=freq)
+    period = pd.date_range(StartDate, periods=purchase_period, freq=freq)
     period = pd.DataFrame(reversed(period))
     period['StartDate'] = StartDate
     period.columns =['StatusCreatedDate', 'StartDate']
@@ -166,7 +166,7 @@ if make_pred:
     purchase_period_prediction = predict_period(Client)
     
     sales_weeks_df = pd.DataFrame(ticket_sales_features(pd.to_datetime(Client["StartDate"],errors='coerce'), purchase_period_prediction,event_type))
-    sales_weeks_pred = predictWeeklySales(sales_weeks_df)
+    # sales_weeks_pred = predictWeeklySales(sales_weeks_df)
 
     st.success(f"Predicted purchase period {purchase_period_prediction}")
 
