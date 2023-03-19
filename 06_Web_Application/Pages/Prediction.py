@@ -28,12 +28,12 @@ model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
 #Caching the model for faster loading
 @st.cache_resource
 
-def addSeasonCode(df):
+def addSeasonCode(df,StartDate):
     # Creating the Season column
-    _condition_winter = (df.StartDate.dt.month>=1)&(df.StartDate.dt.month<=3)
-    _condtion_spring = (df.StartDate.dt.month>=4)&(df.StartDate.dt.month<=6)
-    _condition_summer = (df.StartDate.dt.month>=7)&(df.StartDate.dt.month<=9)
-    _condition_autumn = (df.StartDate.dt.month>=10)&(df.StartDate.dt.month<=12)
+    _condition_winter = (StartDate.dt.month>=1)&(StartDate.dt.month<=3)
+    _condtion_spring = (StartDate.dt.month>=4)&(StartDate.dt.month<=6)
+    _condition_summer = (StartDate.dt.month>=7)&(StartDate.dt.month<=9)
+    _condition_autumn = (StartDate.dt.month>=10)&(StartDate.dt.month<=12)
     
     df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
 
@@ -50,7 +50,7 @@ def addSeasonCode(df):
 
 def event_startdate_features(df, StartDate):
     # StartDate = StartDate.copy()
-    df = addSeasonCode(StartDate)
+    df = addSeasonCode(df, StartDate)
     df['StartHour'] = StartDate.dt.hour
     df['StartDayofWeek'] = StartDate.dt.dayofweek
     df['StartQuarter'] = StartDate.dt.quarter
