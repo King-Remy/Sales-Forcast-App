@@ -58,7 +58,7 @@ def event_startdate_features(StartDate_df):
     StartDate_df['StartMonth'] = StartDate_df.StartDate.dt.month
     StartDate_df['StartYear'] = StartDate_df.StartDate.dt.year
     StartDate_df['StartDayofMonth'] = StartDate_df.StartDate.dt.day
-    StartDate_df['StartWeekofYear'] = StartDate_df.StartDate.dt.weekofyear
+    StartDate_df['StartWeekofYear'] = np.uint32(np.int32(StartDate_df.StartDate.dt.isocalendar().week))
     StartDate_df['StartDate'] = StartDate_df.StartDate.dt.date
     return StartDate_df
 
