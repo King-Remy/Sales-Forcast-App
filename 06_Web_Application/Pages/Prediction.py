@@ -27,39 +27,45 @@ model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
 #Caching the model for faster loading
 @st.cache_resource
 
-def predict_period(StartDate):
-    # dict_out = {}
-    
+def addSeasonCode(df):
     # Creating the Season column
-    _condition_winter = (StartDate.month>=1)&(StartDate.month<=3)
-    _condtion_spring = (StartDate.month>=4)&(StartDate.month<=6)
-    _condition_summer = (StartDate.month>=7)&(StartDate.month<=9)
-    _condition_autumn = (StartDate.month>=10)&(StartDate.month<=12)
-    Season = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
+    _condition_winter = (df.StartDate.month>=1)&(df.StartDate.month<=3)
+    _condtion_spring = (df.StartDate.month>=4)&(df.StartDate.month<=6)
+    _condition_summer = (df.StartDate.month>=7)&(df.StartDate.month<=9)
+    _condition_autumn = (df.StartDate.month>=10)&(df.StartDate.month<=12)
+    
+    df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
 
-    if Season == 'Autumn':
-        Season = 0 
-    elif Season == 'Winter':
-        Season = 3
-    elif Season == 'Spring':
-        Season = 1 
-    elif Season == 'Summer':
-        Season = 2
+    eventSeasonCode = []
+    for row in df['StartSeason']:
+        if row == 'Autumn': eventSeasonCode.append(0)
+        if row == 'Winter': eventSeasonCode.append(3)
+        if row == 'Spring': eventSeasonCode.append(1)
+        if row == 'Summer': eventSeasonCode.append(2)
 
-    # StartWeek = StartDate.week
-    StartHour = StartDate.hour
-    StartDayofWeek = StartDate.dayofweek
-    StartQuarter = StartDate.quarter
-    StartDayofyear = StartDate.dayofyear
-    StartMonth = StartDate.month
-    StartYear = StartDate.year
-    StartDayofMonth = StartDate.day
-    StartWeekofYear = StartDate.weekofyear
-    # df = 
-    # st.table()
-    prediction_out = model_period.predict(pd.DataFrame([[Season, StartHour, StartDayofWeek, StartQuarter, StartDayofyear, StartMonth, StartYear, StartDayofMonth, StartWeekofYear]], columns=['Season', 'StartHour', 'StartDayofWeek', 'StartQuarter', 'StartDayofyear', 'StartMonth', 'StartYear', 'StartDayofMonth', 'StartWeekofYear']))
+    df['SeasonCode'] = eventSeasonCode
+
+    return df
+
+def event_startdate_features(dfs):
+    dfs = dfs.copy()
+    dfs = addSeasonCode(dfs)
+    dfs['StartHour'] = dfs.StartDate.dt.hour
+    dfs['StartDayofWeek'] = dfs.StartDate.dt.dayofweek
+    dfs['StartQuarter'] = dfs.StartDate.dt.quarter
+    dfs['StartDayofyear'] = dfs.StartDate.dt.dayofyear
+    dfs['StartMonth'] = dfs.StartDate.dt.month
+    dfs['StartYear'] = dfs.StartDate.dt.year
+    dfs['StartDayofMonth'] = dfs.StartDate.dt.day
+    dfs['StartWeekofYear'] = dfs.StartDate.dt.weekofyear
+    dfs['StartDate'] = dfs.StartDate.dt.date
+    return dfs
+
+def predict_period(StartDate):
+    df2 = event_startdate_features(Client).drop(labels=['StartDate', 'EventSeason'], axis=1)
+    period_pred_out = model_period.predict(df2)
     # df['Purchase_period_Predicted'] = prediction_out
-    return prediction_out
+    return round(period_pred_out[0])
 
 def predict_sales(StartDate, event_type, weeks_to_event):
     StatusCreatedHour = StartDate.hour
@@ -75,7 +81,7 @@ def predict_sales(StartDate, event_type, weeks_to_event):
         if event_type == key:
             event_type = value
 
-    prediction_sales_out = model_sales.predict(pd.DataFrame([[StatusCreatedHour,event_type,StatusCreatedDayofWeek,StatusCreatedQuarter,StatusCreatedDayofyear,StatusCreatedMonth,StatusCreatedYear,StatusCreatedDayofMonth,StatusCreatedWeekofYear,weeks_to_event]], columns=['StatusCreatedHour','EventType','StatusCreatedDayofWeek','StatusCreatedQuarter','StatusCreatedDayofyear','StatusCreatedMonth','StatusCreatedYear','StatusCreatedDayofMonth','StatusCreatedWeekofYear','Weeks to Event']))
+    prediction_sales_out = model_sales.predict(pd.DataFrame([[StatusCreatedHour,event_type,StatusCreatedDayofWeek,StatusCreatedQuarter,StatusCreatedDayofyear,StatusCreatedMonth,StatusCreatedYear,StatusCreatedDayofMonth,StatusCreatedWeekofYear,weeks_to_event]], columns=['StatusCreatedHour','StartType','StatusCreatedDayofWeek','StatusCreatedQuarter','StatusCreatedDayofyear','StatusCreatedMonth','StatusCreatedYear','StatusCreatedDayofMonth','StatusCreatedWeekofYear','Weeks to Event']))
 
     return prediction_sales_out
 
@@ -94,7 +100,7 @@ start_time = st.sidebar.time_input('Enter start time', datetime.time(0, 00))
 
 start_datetime = datetime.datetime.combine(start_date, start_time)
 
-weeks_to_event = st.sidebar.number_input("Promotion Start (Weeks to Event)", min_value=0, max_value=100, value=1)
+weeks_to_event = st.sidebar.number_input("Booking Period (Weeks to EventDate)", min_value=0, max_value=100, value=1)
 make_pred = st.sidebar.button("Predict")
 
 # Managing input data
@@ -128,7 +134,7 @@ if make_pred:
         
         sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'] - 1
         # sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'].apply(lambda x: x -1)
-        sales_table['Number of Tickets (predicted)'] = purchase_sales_prediction
+        sales_table['Number of Tickets (predicted)'] = purchase_sales_prediction.tolist
         sales_table['Sales (Cum_Sum)'] = sales_table['Number of Tickets (predicted)'].cumsum()
         sales_table['Sales (Cum_Perc)'] = 100*sales_table['Sales (Cum_Sum)']/sales_table['Number of Tickets (predicted)'].sum()
 
