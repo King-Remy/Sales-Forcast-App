@@ -120,7 +120,7 @@ if make_pred:
     # conv = str(start_datetime)
     # p1 = pd.to_datetime(start_datetime, utc=True)  
     Client = pd.DataFrame.from_dict([{"StartDate": start_datetime}])
-    Client["StartDate"] = pd.to_datetime(start_datetime)              # converting created Event Startdate column with users StartDate to datetime format
+    Client["StartDate"] = pd.to_datetime(start_datetime, format='%Y-%m-%d %H:%M')              # converting created Event Startdate column with users StartDate to datetime format
 
     purchase_period_prediction = predict_period(Client)
     
