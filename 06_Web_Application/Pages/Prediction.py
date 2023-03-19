@@ -28,7 +28,7 @@ model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
 #Caching the model for faster loading
 @st.cache_resource
 
-def addSeasonCode(df,StartDate):
+def addSeasonCode(StartDate):
     # Creating the Season column
     _condition_winter = (StartDate.month>=1)&(StartDate.month<=3)
     _condtion_spring = (StartDate.month>=4)&(StartDate.month<=6)
