@@ -101,6 +101,8 @@ start_time = st.sidebar.time_input('Enter start time', datetime.time(0, 00))
 
 start_datetime = datetime.datetime.combine(start_date, start_time)
 
+st.success(f"{start_datetime}")
+
 weeks_to_event = st.sidebar.number_input("Booking Period (Weeks to EventDate)", min_value=0, max_value=100, value=1)
 make_pred = st.sidebar.button("Predict")
 
@@ -116,8 +118,9 @@ if make_pred:
 
     # Generating data frame
     conv = str(start_datetime)
-    Client = pd.DataFrame.from_dict([{"StartDate": conv}])
-    Client["StartDate"] = pd.to_datetime(conv, errors='coerce')                # converting created Event Startdate column with users StartDate to datetime format
+    p1 = pd.to_datetime(conv)
+    Client = pd.DataFrame.from_dict([{"StartDate": p1}])
+    # Client["StartDate"] = pd.to_datetime(conv)                # converting created Event Startdate column with users StartDate to datetime format
 
     purchase_period_prediction = predict_period(Client)
     
