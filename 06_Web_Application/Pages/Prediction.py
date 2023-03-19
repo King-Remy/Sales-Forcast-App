@@ -124,6 +124,7 @@ if make_pred:
     # Client["StartDate"] = pd.to_datetime(start_datetime, format='%Y-%m-%d %H:%M:%S')              # converting created Event Startdate column with users StartDate to datetime format
 
     Client = pd.DataFrame()
+    Client.empty
 
     purchase_period_prediction = predict_period(Client, p1)
     
