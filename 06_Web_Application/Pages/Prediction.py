@@ -6,6 +6,7 @@ from datetime import date, timedelta
 import pandas as pd
 import xgboost as xgb
 import os
+import time
 
 
 # Setup data from csv
@@ -108,34 +109,41 @@ make_pred = st.sidebar.button("Predict")
 
 # Making prediction and displaying data
 if make_pred:
-    conv = str(start_datetime)
-    p1 = pd.to_datetime(conv)         # Converting startdate input into datetime
-    purchase_period_prediction = predict_period(p1)
+    with st.spinner('Generating predictions. Please wait....'):
+        time.sleep(1)
+    # conv = str(start_datetime)
+    
+
+    # Generating data frame
+    Client = pd.DataFrame.from_dict([{"StartDate": start_datetime}])
+    Client["StartDate"] = pd.to_datetime(Client["StartDate"], errors='coerce')                # converting created Event Startdate column with users StartDate to datetime format
+
+    purchase_period_prediction = predict_period(Client)
     
     st.success(f"Predicted purchase period {purchase_period_prediction.item(0)}")
     # st.subheader(f"Predicted Species: {species_pred}")
 
     
 
-    sales_table = pd.DataFrame()
+    # sales_table = pd.DataFrame()
 
     # Creating weeks to event date column
-    date_plus_weeks_added = start_date + timedelta(weeks=weeks_to_event)
+    # date_plus_weeks_added = start_date + timedelta(weeks=weeks_to_event)
 
-    value = range(weeks_to_event)
+    # value = range(weeks_to_event)
 
-    sales_table['Weeks to Event (Date)'] = pd.date_range(start=date_plus_weeks_added, end=start_datetime, freq='W')
+    # sales_table['Weeks to Event (Date)'] = pd.date_range(start=date_plus_weeks_added, end=start_datetime, freq='W')
 
-    sales_table['Weeks to Event (Number)'] = weeks_to_event
+    # sales_table['Weeks to Event (Number)'] = weeks_to_event
 
-    for i in value:
-        purchase_sales_prediction = predict_sales(p1, event_type, weeks_to_event)
+    # for i in value:
+    #     purchase_sales_prediction = predict_sales(p1, event_type, weeks_to_event)
 
         
-        sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'] - 1
-        # sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'].apply(lambda x: x -1)
-        sales_table['Number of Tickets (predicted)'] = purchase_sales_prediction.tolist
-        sales_table['Sales (Cum_Sum)'] = sales_table['Number of Tickets (predicted)'].cumsum()
-        sales_table['Sales (Cum_Perc)'] = 100*sales_table['Sales (Cum_Sum)']/sales_table['Number of Tickets (predicted)'].sum()
+    #     sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'] - 1
+    #     # sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'].apply(lambda x: x -1)
+    #     sales_table['Number of Tickets (predicted)'] = purchase_sales_prediction.tolist
+    #     sales_table['Sales (Cum_Sum)'] = sales_table['Number of Tickets (predicted)'].cumsum()
+    #     sales_table['Sales (Cum_Perc)'] = 100*sales_table['Sales (Cum_Sum)']/sales_table['Number of Tickets (predicted)'].sum()
 
-    st.dataframe(sales_table)
+    # st.dataframe(sales_table)
