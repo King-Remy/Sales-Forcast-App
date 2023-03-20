@@ -71,17 +71,17 @@ def event_startdate_features(StartDate_df):
     StartDate_df['StartDate'] = StartDate_df.StartDate.dt.date
     return StartDate_df
 
-def booking_startdate_feautre(booking_dates_df, event_type):
+def booking_startdate_feautre(booking_dates_df):
     booking_dates_df = booking_dates_df.copy()
     # booking_dates_df['BookedHour'] = booking_dates_df.StatusCreatedDate.dt.hour
-    booking_dates_df = eventTypeConversion(booking_dates_df, event_type)
-    booking_dates_df['BookedDayofWeek'] = booking_dates_df.StatusCreatedDate.dt.dayofweek
-    booking_dates_df['BookedQuarter'] = booking_dates_df.StatusCreatedDate.dt.quarter
-    booking_dates_df['BookedDayofyear'] = booking_dates_df.StatusCreatedDate.dt.dayofyear
-    booking_dates_df['BookedMonth'] = booking_dates_df.StatusCreatedDate.dt.month
-    booking_dates_df['BookedYear'] = booking_dates_df.StatusCreatedDate.dt.year
-    booking_dates_df['BookedDayofMonth'] = booking_dates_df.StatusCreatedDate.dt.day
-    booking_dates_df['BookedWeekofYear'] = booking_dates_df.StatusCreatedDate.dt.weekofyear
+    
+    booking_dates_df['StatusCreatedDayofWeek'] = booking_dates_df.StatusCreatedDate.dt.dayofweek
+    booking_dates_df['StatusCreatedQuarter'] = booking_dates_df.StatusCreatedDate.dt.quarter
+    booking_dates_df['StatusCreatedDayofyear'] = booking_dates_df.StatusCreatedDate.dt.dayofyear
+    booking_dates_df['StatusCreatedMonth'] = booking_dates_df.StatusCreatedDate.dt.month
+    booking_dates_df['StatusCreatedYear'] = booking_dates_df.StatusCreatedDate.dt.year
+    booking_dates_df['StatusCreatedDayofMonth'] = booking_dates_df.StatusCreatedDate.dt.day
+    booking_dates_df['StatusCreatedWeekofYear'] = booking_dates_df.StatusCreatedDate.dt.weekofyear
     booking_dates_df['BookedDate'] = booking_dates_df.StatusCreatedDate.dt.date
 
     return booking_dates_df
@@ -101,7 +101,8 @@ def ticket_sales_features(StartDate, purchase_period, event_type):
     period = pd.DataFrame(reversed(period))
     period['StartDate'] = StartDate
     period.columns =['StatusCreatedDate', 'StartDate']
-    period = booking_startdate_feautre(period, event_type)
+    period = eventTypeConversion(period, event_type)
+    period = booking_startdate_feautre(period)
     period['Weeks_to_Event'] = weeks
     return period
 
