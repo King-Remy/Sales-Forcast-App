@@ -164,7 +164,7 @@ if make_pred:
     Client = pd.DataFrame.from_dict([{"StartDate": start_date}])
     Client["StartDate"] = pd.to_datetime(start_date,errors='coerce')              # converting created Event Startdate column with users StartDate to datetime format
 
-    purchase_period_prediction = predict_period(Client)
+    # purchase_period_prediction = predict_period(Client)
     
     sales_weeks_df = pd.DataFrame(ticket_sales_features(pd.to_datetime(start_date,errors='coerce'), weeks_to_event,event_type))
     # sales_weeks_pred = predictWeeklySales(sales_weeks_df)
