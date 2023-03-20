@@ -49,18 +49,18 @@ def addSeasonCode(df):
 
     return df
 
-def eventTypeConversion(df, purchase_period):
+def eventTypeConversion(df, event_type, purchase_period):
     
     eventTypeCode = []
     for key,value in config.items():
-        if event_type == key: eventTypeCode.append([value]*purchase_period,ignore_index=True)
+        if event_type == key: eventTypeCode = list(repeat(value, purchase_period))
     df2 = pd.DataFrame()
     df2['EventType'] = eventTypeCode
 
     frames = [df, df2]
 
     result = pd.concat(frames)
-    return df
+    return result
 
 def event_startdate_features(StartDate_df):
     StartDate_df = StartDate_df.copy()
