@@ -169,7 +169,7 @@ if make_pred:
     sales_weeks_df = pd.DataFrame(ticket_sales_features(pd.to_datetime(start_date,errors='coerce'), weeks_to_event,event_type))
     # sales_weeks_pred = predictWeeklySales(sales_weeks_df)
 
-    st.success(f"Predicted purchase period {purchase_period_prediction}")
+    # st.success(f"Predicted purchase period {purchase_period_prediction}")
 
     st.success(f"Predicted purchase period {sales_weeks_df}")
     # st.dataframe(sales_weeks_pred, use_container_width=True)
