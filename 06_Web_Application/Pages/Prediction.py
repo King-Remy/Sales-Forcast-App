@@ -104,7 +104,7 @@ def ticket_sales_features(StartDate, purchase_period, event_type):
     period.columns =['StatusCreatedDate', 'StartDate']
     period = eventTypeConversion(period, event_type, purchase_period)
     period = booking_startdate_feautre(period)
-    period['Weeks_to_Event'] = weeks
+    period['Weeks to Event'] = weeks
     return period
 
     
