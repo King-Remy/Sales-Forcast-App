@@ -48,11 +48,11 @@ def addSeasonCode(df):
 
     return df
 
-def eventTypeConversion(df, event_type):
+def eventTypeConversion(df, purchase_period):
     
     eventTypeCode = []
     for key,value in config.items():
-        if event_type == key: eventTypeCode.append(value)
+        if event_type == key: eventTypeCode += purchase_period * [value]
     
     df['EventType'] = eventTypeCode
     return df
@@ -98,7 +98,7 @@ def ticket_sales_features(StartDate, purchase_period, event_type):
     weeks = list(reversed(range(purchase_period)))
 
     period = pd.date_range(StartDate, periods=purchase_period, freq=freq)
-    period = pd.DataFrame(reversed(period))
+    period = pd.DataFrame(reversed(period, purchase_period))
     period['StartDate'] = StartDate
     period.columns =['StatusCreatedDate', 'StartDate']
     period = eventTypeConversion(period, event_type)
