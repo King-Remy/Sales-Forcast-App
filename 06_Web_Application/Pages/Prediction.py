@@ -98,7 +98,7 @@ def ticket_sales_features(StartDate, purchase_period, event_type):
     weeks = list(reversed(range(purchase_period)))
 
     period = pd.date_range(StartDate, periods=purchase_period, freq=freq)
-    period = pd.DataFrame(reversed(period, purchase_period))
+    period = pd.DataFrame(reversed(period))
     period['StartDate'] = StartDate
     period.columns =['StatusCreatedDate', 'StartDate']
     period = eventTypeConversion(period, event_type)
