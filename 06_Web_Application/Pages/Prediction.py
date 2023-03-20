@@ -7,6 +7,7 @@ import pandas as pd
 import xgboost as xgb
 import os
 import time
+from itertools import repeat
 
 
 # Setup data from csv
@@ -52,7 +53,7 @@ def eventTypeConversion(df, purchase_period):
     
     eventTypeCode = []
     for key,value in config.items():
-        if event_type == key: eventTypeCode.extend([value]*purchase_period)
+        if event_type == key: eventTypeCode = list(repeat(value, purchase_period))
     
     df['EventType'] = eventTypeCode
     return df
