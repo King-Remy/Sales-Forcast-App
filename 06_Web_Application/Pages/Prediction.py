@@ -125,7 +125,7 @@ def predictWeeklySales(df):
     
     weekly_sales_pred['Sales_Prediction'] = predictions
     weekly_sales_pred['Cummulative_Prediction'] = pd.Series(predictions).cumsum()
-    weekly_sales_pred['Cummulative Booking %'] = round((weekly_sales_pred['Cummulative_Prediction'] / weekly_sales_pred['Sales_Prediction'] .sum()) * 100, 0)
+    weekly_sales_pred['Cummulative Booking %'] = round((weekly_sales_pred['Cummulative_Prediction'] / weekly_sales_pred['Sales_Prediction'].sum()) * 100, 0)
 
     return weekly_sales_pred
 
