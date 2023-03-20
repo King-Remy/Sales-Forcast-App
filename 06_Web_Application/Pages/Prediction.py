@@ -54,8 +54,12 @@ def eventTypeConversion(df, purchase_period):
     eventTypeCode = []
     for key,value in config.items():
         if event_type == key: eventTypeCode.append([value]*purchase_period,ignore_index=True)
-    
-    df['EventType'] = eventTypeCode
+    df2 = pd.DataFrame()
+    df2['EventType'] = eventTypeCode
+
+    frames = [df, df2]
+
+    result = pd.concat(frames)
     return df
 
 def event_startdate_features(StartDate_df):
