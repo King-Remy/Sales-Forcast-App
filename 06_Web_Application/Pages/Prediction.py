@@ -94,8 +94,8 @@ def predict_period(StartDate):          # This function takes in a DatFrame with
     return round(period_pred_out[0])
 
 def ticket_sales_features(StartDate, purchase_period, event_type):
-    freq = '-1W-SUN'
-    weeks = list(range(purchase_period + 1))
+    freq = '1W-SUN'
+    weeks = list(reversed(range(purchase_period)))
 
     period = pd.date_range(StartDate, periods=purchase_period, freq=freq)
     period = pd.DataFrame(reversed(period))
@@ -170,7 +170,7 @@ if make_pred:
 
     st.success(f"Predicted purchase period {purchase_period_prediction}")
 
-    st.success(f"Predicted purchase period {sales_weeks_df}")
+    st.success(f"Predicted purchase period {sales_weeks_pred}")
     # st.dataframe(sales_weeks_pred, use_container_width=True)
     # st.subheader(f"Predicted Species: {species_pred}")
 
