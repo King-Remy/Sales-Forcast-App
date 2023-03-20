@@ -83,7 +83,7 @@ def booking_startdate_feautre(booking_dates_df):
     booking_dates_df['StatusCreatedYear'] = booking_dates_df.StatusCreatedDate.dt.year
     booking_dates_df['StatusCreatedDayofMonth'] = booking_dates_df.StatusCreatedDate.dt.day
     booking_dates_df['StatusCreatedWeekofYear'] = booking_dates_df.StatusCreatedDate.dt.weekofyear
-    booking_dates_df['BookedDate'] = booking_dates_df.StatusCreatedDate.dt.date
+    booking_dates_df['StatusCreatedDate'] = booking_dates_df.StatusCreatedDate.dt.date
 
     return booking_dates_df
 
