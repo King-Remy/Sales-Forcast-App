@@ -113,7 +113,7 @@ def predictWeeklySales(df):
     df2 = df.drop(labels=['StatusCreatedDate', 'StartDate'], axis=1)
     weekly_sales_pred_out = model_sales.predict(df2)
     weekly_sales_pred = pd.DataFrame()
-    weekly_sales_pred = df['StatusCreatedDate'].dt.date
+    weekly_sales_pred = df['StatusCreatedDate']
 
     predictions = []
     # index = len(weekly_sales_pred_out) + 1
