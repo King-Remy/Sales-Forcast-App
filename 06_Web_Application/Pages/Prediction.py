@@ -53,7 +53,7 @@ def eventTypeConversion(df, purchase_period):
     
     eventTypeCode = []
     for key,value in config.items():
-        if event_type == key: eventTypeCode = list(repeat(int(value), purchase_period))
+        if event_type == key: eventTypeCode = list(repeat(int(value), int(purchase_period)))
     
     df['EventType'] = eventTypeCode
     return df
