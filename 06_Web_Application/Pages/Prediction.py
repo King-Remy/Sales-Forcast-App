@@ -168,11 +168,11 @@ if make_pred:
     # purchase_period_prediction = predict_period(Client)
     
     sales_weeks_df = pd.DataFrame(ticket_sales_features(pd.to_datetime(start_date,errors='coerce'), weeks_to_event,event_type))
-    # sales_weeks_pred = predictWeeklySales(sales_weeks_df)
+    sales_weeks_pred = predictWeeklySales(sales_weeks_df)
 
     # st.success(f"Predicted purchase period {purchase_period_prediction}")
 
-    st.success(f"Predicted purchase period {sales_weeks_df}")
+    st.success(f"Predicted purchase period {sales_weeks_pred}")
     # st.dataframe(sales_weeks_pred, use_container_width=True)
     # st.subheader(f"Predicted Species: {species_pred}")
 
