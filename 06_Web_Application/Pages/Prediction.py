@@ -113,7 +113,7 @@ def predictWeeklySales(df):
     df2 = df.drop(labels=['StatusCreatedDate', 'StartDate'], axis=1)
     weekly_sales_pred_out = model_sales.predict(df2)
     weekly_sales_pred = pd.DataFrame()
-    weekly_sales_pred['Weeks_Starting'] = pd.to_datetime(df['StatusCreatedDate'])
+    weekly_sales_pred['Week Starting'] = pd.to_datetime(df['StatusCreatedDate'])
 
     predictions = []
     # index = len(weekly_sales_pred_out) + 1
@@ -123,9 +123,9 @@ def predictWeeklySales(df):
         else:
             predictions.append(abs(round(row)))
     
-    weekly_sales_pred['Sales_Prediction'] = predictions
-    weekly_sales_pred['Cummulative_Prediction'] = pd.Series(predictions).cumsum()
-    weekly_sales_pred['Cummulative Booking %'] = round((weekly_sales_pred['Cummulative_Prediction'] / weekly_sales_pred['Sales_Prediction'].sum()) * 100, 0)
+    weekly_sales_pred['Sales Prediction'] = predictions
+    weekly_sales_pred['Cummulated Prediction'] = pd.Series(predictions).cumsum()
+    weekly_sales_pred['Cummulated Booking %'] = round((weekly_sales_pred['Cummulated Prediction'] / weekly_sales_pred['Sales Prediction'].sum()) * 100, 0)
 
     return weekly_sales_pred
 
@@ -172,10 +172,13 @@ if make_pred:
 
     # st.success(f"Predicted purchase period {purchase_period_prediction}")
 
-    st.success(f"Predicted purchase period {sales_weeks_pred}")
+    # st.success(f"Predicted purchase period {sales_weeks_pred}")
     # st.dataframe(sales_weeks_pred, use_container_width=True)
     # st.subheader(f"Predicted Species: {species_pred}")
-
+    st.info("Weekly sales distribution predictions")
+    st.dataframe(sales_weeks_pred, use_container_width=True)
+    st.info("Plotting Week vs Sales Prediction")
+    st.line_chart(sales_weeks_pred, x='Week Starting', y='Sales Prediction')
     
 
     # sales_table = pd.DataFrame()
@@ -190,12 +193,12 @@ if make_pred:
     # sales_table['Weeks to Event (Number)'] = weeks_to_event
 
     # for i in value:
-    #     purchase_sales_prediction = predict_sales(p1, event_type, weeks_to_event)
+    #     purchase_sales prediction = predict_sales(p1, event_type, weeks_to_event)
 
         
     #     sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'] - 1
     #     # sales_table['Weeks to Event (Number)'] = sales_table['Weeks to Event (Number)'].apply(lambda x: x -1)
-    #     sales_table['Number of Tickets (predicted)'] = purchase_sales_prediction.tolist
+    #     sales_table['Number of Tickets (predicted)'] = purchase_sales prediction.tolist
     #     sales_table['Sales (Cum_Sum)'] = sales_table['Number of Tickets (predicted)'].cumsum()
     #     sales_table['Sales (Cum_Perc)'] = 100*sales_table['Sales (Cum_Sum)']/sales_table['Number of Tickets (predicted)'].sum()
 
