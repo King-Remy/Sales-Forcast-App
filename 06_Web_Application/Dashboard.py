@@ -4,6 +4,10 @@ import os
 import json
 
 
+st.set_page_config(
+    page_title="Dashboard"
+)
+
 # set variables from config file
 config_path = os.path.abspath('..')
 
