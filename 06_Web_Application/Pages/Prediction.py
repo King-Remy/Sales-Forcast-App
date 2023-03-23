@@ -182,7 +182,7 @@ if make_pred:
     st.info("Weekly sales distribution predictions")
     st.dataframe(sales_weeks_pred, use_container_width=True)
     st.info("Plotting Week vs Sales Prediction")
-    st.line_chart(sales_weeks_pred, x='Week Starting', y='Sales Prediction')
+    st.line_chart(sales_weeks_pred, x='Weeks to Event', y='Sales Prediction')
 
     st.success("Summary")
 
