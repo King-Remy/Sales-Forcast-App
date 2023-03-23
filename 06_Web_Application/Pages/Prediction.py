@@ -188,9 +188,9 @@ if make_pred:
 
     st.markdown(f"From the predictions above, it shows the sales distribution to your preferred booking period of {weeks_to_event} (weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week and the cummulated Sales prediction and booking percentage to the week of event start date.")
     st.markdown("Below shows the checkpoint stages based on percentiles (25%, 50%, and 90%) of the cumlated sales predicted column")
-    st.markdown(f"Checkpoint 1 - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.25)}   25th percentile")
-    st.markdown(f"Checkpoint 2 - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.5)}    50th percentile")
-    st.markdown(f"Checkpoint 3 - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.9)}    90th percentile")
+    st.header(f"Checkpoint 1 (25th percentile) - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.25)}")
+    st.header(f"Checkpoint 2 (50th percentile) - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.5)}")
+    st.header(f"Checkpoint 3 (90th percentile) - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.9)}")
 
     st.markdown("By matching your actual cumulated sales by the predicted cumulated sales, if the actual is higher/below the predicted, please consider increasing/reducing the size of venue or the promotions.")
                 
