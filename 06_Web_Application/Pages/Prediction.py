@@ -176,11 +176,13 @@ if make_pred:
     # st.success(f"Predicted purchase period {sales_weeks_pred}")
     # st.dataframe(sales_weeks_pred, use_container_width=True)
     # st.subheader(f"Predicted Species: {species_pred}")
+    totalSales = sales_weeks_pred['Sales Prediction'].sum()
+    st.success(f"Baed on your preferred event type and booking period for the weeks to the event start date, the total number of ticket sales for your event is {str(totalSales)}", icon="ℹ️")
+    
     st.info("Weekly sales distribution predictions")
     st.dataframe(sales_weeks_pred, use_container_width=True)
     st.info("Plotting Week vs Sales Prediction")
     st.line_chart(sales_weeks_pred, x='Week Starting', y='Sales Prediction')
-    
 
     # sales_table = pd.DataFrame()
 
