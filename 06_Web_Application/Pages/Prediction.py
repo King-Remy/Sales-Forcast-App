@@ -96,7 +96,7 @@ def predict_period(StartDate):          # This function takes in a DatFrame with
 
 def ticket_sales_features(StartDate, purchase_period, event_type):          # This function creates features required to predict weekly sales distribution
     freq = '-1W-SUN'
-    weeks = list(reversed(range(purchase_period)))
+    weeks = list(range(purchase_period))
 
     period = pd.date_range(StartDate, periods=purchase_period, freq=freq)
     period = pd.DataFrame(reversed(period))
