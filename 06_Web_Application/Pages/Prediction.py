@@ -126,7 +126,7 @@ def predictWeeklySales(df):
     
     weekly_sales_pred['Sales Prediction'] = predictions
     weekly_sales_pred['Cummulated Prediction'] = pd.Series(predictions).cumsum()
-    weekly_sales_pred['Cummulated Booking %'] = round((weekly_sales_pred['Cummulated Prediction'] / weekly_sales_pred['Sales Prediction'].sum()) * 100, 0)
+    weekly_sales_pred['Cummulated Sales %'] = round((weekly_sales_pred['Cummulated Prediction'] / weekly_sales_pred['Sales Prediction'].sum()) * 100, 0)
 
     return weekly_sales_pred
 
@@ -177,13 +177,25 @@ if make_pred:
     # st.dataframe(sales_weeks_pred, use_container_width=True)
     # st.subheader(f"Predicted Species: {species_pred}")
     totalSales = sales_weeks_pred['Sales Prediction'].sum()
-    st.success(f"Baed on your preferred event type and booking period for the weeks to the event start date, the total number of ticket sales for your event is {str(totalSales)}", icon="ℹ️")
+    st.success(f"Based on your preferred event type and booking period for the weeks to your event start date, the total number of ticket sales for your event is {str(totalSales)}", icon="ℹ️")
     
     st.info("Weekly sales distribution predictions")
     st.dataframe(sales_weeks_pred, use_container_width=True)
     st.info("Plotting Week vs Sales Prediction")
     st.line_chart(sales_weeks_pred, x='Week Starting', y='Sales Prediction')
 
+    st.success("Summary")
+
+    message = "From the predictions above, it shows the sales distribution to your preferred booking period of" + weeks_to_event + "(weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week and the cummulated prediction and booking percentage to the week of event start date."
+
+    st.markdown(message[0])
+    st.markdown(f'''Below shows the checkpoint stages based on percentiles (25%, 50%, and 90%) of the cumlated sales predicted column 
+                   Checkpoint 1 - {sales_weeks_pred['Cummulated Sales %'].quantile(0.25)}   25th percentile
+                   Checkpoint 2 - {sales_weeks_pred['Cummulated Sales %'].quantile(0.5)}    50th percentile
+                   Checkpoint 3 - {sales_weeks_pred['Cummulated Sales %'].quantile(0.9)}    90th percentile
+
+                   By matching your actual cumulated sales by the predicted cumulated sales, if the actual is higher/below the predicted, please consider increasing/reducing the size of venue or the promotions. 
+                ''')
     # sales_table = pd.DataFrame()
 
     # Creating weeks to event date column
