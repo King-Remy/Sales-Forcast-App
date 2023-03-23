@@ -125,8 +125,8 @@ def predictWeeklySales(df):
             predictions.append(abs(round(row)))
     
     weekly_sales_pred['Sales Prediction'] = predictions
-    weekly_sales_pred['Cummulated Prediction'] = pd.Series(predictions).cumsum()
-    weekly_sales_pred['Cummulated Sales %'] = round((weekly_sales_pred['Cummulated Prediction'] / weekly_sales_pred['Sales Prediction'].sum()) * 100, 0)
+    weekly_sales_pred['Cummulated Sales Prediction'] = pd.Series(predictions).cumsum()
+    weekly_sales_pred['Cummulated Sales %'] = round((weekly_sales_pred['Cummulated Sales Prediction'] / weekly_sales_pred['Sales Prediction'].sum()) * 100, 0)
 
     return weekly_sales_pred
 
@@ -186,14 +186,14 @@ if make_pred:
 
     st.success("Summary")
 
-    st.markdown(f"From the predictions above, it shows the sales distribution to your preferred booking period of {weeks_to_event} (weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week and the cummulated prediction and booking percentage to the week of event start date.")
-    st.markdown(f'''Below shows the checkpoint stages based on percentiles (25%, 50%, and 90%) of the cumlated sales predicted column 
-                   Checkpoint 1 - {sales_weeks_pred['Cummulated Sales %'].quantile(0.25)}   25th percentile
-                   Checkpoint 2 - {sales_weeks_pred['Cummulated Sales %'].quantile(0.5)}    50th percentile
-                   Checkpoint 3 - {sales_weeks_pred['Cummulated Sales %'].quantile(0.9)}    90th percentile
+    st.markdown(f"From the predictions above, it shows the sales distribution to your preferred booking period of {weeks_to_event} (weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week and the cummulated Sales prediction and booking percentage to the week of event start date.")
+    st.markdown("Below shows the checkpoint stages based on percentiles (25%, 50%, and 90%) of the cumlated sales predicted column")
+    st.markdown(f"Checkpoint 1 - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.25)}   25th percentile")
+    st.markdown(f"Checkpoint 2 - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.5)}    50th percentile")
+    st.markdown(f"Checkpoint 3 - {sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.9)}    90th percentile")
 
-                   By matching your actual cumulated sales by the predicted cumulated sales, if the actual is higher/below the predicted, please consider increasing/reducing the size of venue or the promotions. 
-                ''')
+    st.markdown("By matching your actual cumulated sales by the predicted cumulated sales, if the actual is higher/below the predicted, please consider increasing/reducing the size of venue or the promotions.")
+                
     # sales_table = pd.DataFrame()
 
     # Creating weeks to event date column
