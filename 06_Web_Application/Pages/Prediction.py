@@ -186,9 +186,7 @@ if make_pred:
 
     st.success("Summary")
 
-    message = "From the predictions above, it shows the sales distribution to your preferred booking period of" + weeks_to_event + "(weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week and the cummulated prediction and booking percentage to the week of event start date."
-
-    st.markdown(message[0])
+    st.markdown(f"From the predictions above, it shows the sales distribution to your preferred booking period of {weeks_to_event} (weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week and the cummulated prediction and booking percentage to the week of event start date.")
     st.markdown(f'''Below shows the checkpoint stages based on percentiles (25%, 50%, and 90%) of the cumlated sales predicted column 
                    Checkpoint 1 - {sales_weeks_pred['Cummulated Sales %'].quantile(0.25)}   25th percentile
                    Checkpoint 2 - {sales_weeks_pred['Cummulated Sales %'].quantile(0.5)}    50th percentile
