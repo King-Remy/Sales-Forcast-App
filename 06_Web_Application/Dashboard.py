@@ -8,18 +8,8 @@ st.set_page_config(
     page_title="Dashboard"
 )
 
-# set variables from config file
-config_path = os.path.abspath('..')
-
-with open(config_path + '\config-example.json', 'r') as f:
-    config = json.load(f)
-
-dataset_baseline_fname = config['DEFAULT']['dataset_baseline_fname']
-processing_path = config['DEFAULT']['processing_path']
-dataset_fname_suffix = config['DEFAULT']['dataset_fname_suffix']
-
 # Setup data 
-client_data = pd.read_csv(os.path.join(processing_path,dataset_baseline_fname) + dataset_fname_suffix, header = 0, delimiter = ',')
+client_data = pd.read_csv('C:\Users\KingRemy\OneDrive - University of Keele\Documents\Collaborative App Development\Coursework\Stored_dataset2\client_219_153_baseline.csv')
 
 # Chaning dates to datetime
 client_data['StatusCreatedDate'] = pd.to_datetime(client_data['StatusCreatedDate'], infer_datetime_format=True)
