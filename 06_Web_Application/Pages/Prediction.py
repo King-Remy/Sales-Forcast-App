@@ -9,6 +9,9 @@ import os
 import time
 from itertools import repeat
 
+st.set_page_config(
+    page_title="Client Dataset"
+)
 
 # Setup data from csv
 # df = pd.read_csv("C:\Users\KingRemy\OneDrive - University of Keele\Documents\Collaborative App Development\Coursework\Stored_dataset\client_219_153_EDA.csv", header=0, delimiter=',')
@@ -25,11 +28,6 @@ model_period.load_model("06_Web_Application/Pages/purchase_period_model.json")
 
 model_sales = xgb.XGBRegressor()
 model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
-
-st.set_page_config(
-    page_title="Client Dataset"
-)
-
 #Caching the model for faster loading
 @st.cache_resource
 
