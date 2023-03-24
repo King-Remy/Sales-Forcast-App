@@ -9,12 +9,12 @@ st.set_page_config(
 )
 
 # Setup data 
-client_data = pd.read_csv('06_Web_Application/client_219_153_baseline.csv', header=0, delimiter=',')
+client_data = pd.read_csv('06_Web_Application/client_219_153_baseline.csv')
 
 # Chaning dates to datetime
 client_data['StatusCreatedDate'] = pd.to_datetime(client_data['StatusCreatedDate'], infer_datetime_format=True)
 
-client_data = client_data.head(10)
+client_data = client_data.head(20)
 
 # Make Page
 st.write("""
@@ -44,4 +44,5 @@ st.write('**Others, Group 9** - EventIds begining with 22 Global Skills, Profess
 st.write('**Others, Group 10** - EventIds begining with 23-27 Conference, Language, Geography, History')
 
 # Dsiplaying preview of Datframe
+st.write('**Sample Dataset**')
 st.dataframe(client_data)
