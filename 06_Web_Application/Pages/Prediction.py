@@ -26,6 +26,10 @@ model_period.load_model("06_Web_Application/Pages/purchase_period_model.json")
 model_sales = xgb.XGBRegressor()
 model_sales.load_model("06_Web_Application/Pages/weekly_sales_model.json")
 
+st.set_page_config(
+    page_title="Client Dataset"
+)
+
 #Caching the model for faster loading
 @st.cache_resource
 
@@ -133,7 +137,7 @@ def predictWeeklySales(df):
 # Setup title page
 st.set_page_config(page_title="Prediction")
 st.header("Prediction - Client Dataset")
-st.markdown("Using XGBoost, make predictions on the distribution of likely sales of ticket prior to the start date of an event to decide if more promotion is required to reach target bookings / sales"
+st.markdown("Using XGBoost, make predictions on the distribution of likely sales of ticket prior to the start date of your event to decide if more promotion is required to reach target bookings / sales"
             "The prediction will appear on the graphs and table below to intuit how the prediction was made.")
 st.sidebar.header("Make Prediction")
 

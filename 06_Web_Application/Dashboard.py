@@ -5,7 +5,7 @@ import json
 
 
 st.set_page_config(
-    page_title="Dashboard"
+    page_title="Client Dataset"
 )
 
 # Setup data 
