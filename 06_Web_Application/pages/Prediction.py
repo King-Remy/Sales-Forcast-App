@@ -182,13 +182,13 @@ if make_pred:
 
     st.success("Summary")
 
-    st.markdown(f"From the predictions above, it shows the sales distribution to your preferred booking period of {weeks_to_event} (weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week and the cummulated Sales prediction and booking percentage to the week of event start date.")
+    st.markdown(f"From the predictions above, it shows the sales distribution to your preferred booking period of {weeks_to_event} (weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week, the cummulated Sales prediction and booking percentage to the week of event start date.")
     st.markdown("Below shows the checkpoint stages based on percentiles (25%, 50%, and 90%) of the cumlated sales predicted column")
-    st.subheader(f"Checkpoint 1 (25th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.25))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.75))} weeks to event")
+    st.subheader(f"Checkpoint 1 (25th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.75))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.75))} weeks to event")
     st.subheader(f"Checkpoint 2 (50th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.5))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.5))} weeks to event")
-    st.subheader(f"Checkpoint 3 (90th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.9))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.1))} weeks to event")
+    st.subheader(f"Checkpoint 3 (90th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.1))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.1))} weeks to event")
 
-    st.markdown("By matching your actual cumulated sales by the predicted cumulated sales, if the actual is higher/below the predicted, please consider increasing/reducing the size of venue or the promotions.")
+    st.markdown("By matching your actual cumulated sales by the predicted cumulated sales by each checkpoint, if the actual is higher/below the predicted, please consider increasing/reducing the size of venue or the promotions.")
                 
     # sales_table = pd.DataFrame()
 
