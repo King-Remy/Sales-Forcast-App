@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 # Setup data 
-client_data = pd.read_csv('client_219_153_baseline.csv', header=0, delimiter=',')
+client_data = pd.read_csv('06_Web_Application/client_219_153_baseline.csv', header=0, delimiter=',')
 
 # Chaning dates to datetime
 client_data['StatusCreatedDate'] = pd.to_datetime(client_data['StatusCreatedDate'], infer_datetime_format=True)
