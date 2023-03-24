@@ -26,7 +26,7 @@ Use this dashboard to understand the data and to make preditions.
 """)
 
 st.write('---')
-st.write('**Desription of Dataset**')
+st.write('**Desription of Prediction Dataset**')
 st.write('**Weeks to Event** - number of weeks to event start date')
 st.write('**EventType** - represents the event type of the event name')
 st.write('**StatusCreatedDate** - marks the data bookings were placed by the atendee')
@@ -45,5 +45,5 @@ st.write('**Others, Group 9** - EventIds begining with 22 - Global Skills, Profe
 st.write('**Others, Group 10** - EventIds begining with 23- 27 - Conference, Language, Geography, History')
 st.write('---')
 # Dsiplaying preview of Datframe
-st.write('**Sample Dataset**')
+st.write('**Sample of Prediction Dataset**')
 st.dataframe(client_data)
