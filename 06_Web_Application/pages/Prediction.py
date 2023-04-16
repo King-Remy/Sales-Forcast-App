@@ -146,19 +146,11 @@ start_datetime = datetime.datetime.combine(start_date, start_time)
 weeks_to_event = st.sidebar.number_input("Booking Period (Weeks to EventDate)", min_value=0, max_value=100, value=1)
 make_pred = st.sidebar.button("Predict")
 
-# Managing input data
-# p1 = ""
-
 # Making prediction and displaying data
 if make_pred:
     with st.spinner('Generating predictions. Please wait....'):
         time.sleep(1)
-    
-    
-
-    # Generating data frame
-    # conv = str(start_datetime)
-    # p1 = pd.to_datetime(start_datetime, utc=True)  
+ 
     Client = pd.DataFrame.from_dict([{"StartDate": start_date}])
     Client["StartDate"] = pd.to_datetime(start_date,errors='coerce')              # converting created Event Startdate column with users StartDate to datetime format
 
