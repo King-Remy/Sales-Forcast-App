@@ -1,5 +1,5 @@
 ## Config explanation
-The following explains what each element of the config JSON file refers to
+The following explains what each element of the config example JSON file refers to
 
 ### Config-example
 the config-example.json is used as the template
