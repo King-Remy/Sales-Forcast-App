@@ -47,7 +47,7 @@ def addSeasonCode(df):
 
     return df
 
-def eventTypeConversion(df, event_type, purchase_period):
+def eventTypeConversion(df, event_type, purchase_period):           # This function converts the users event type and maps it to the decoded number for the ML model
     
     eventTypeCode = []
     for key,value in config.items():
@@ -56,10 +56,9 @@ def eventTypeConversion(df, event_type, purchase_period):
     df['EventType'] = eventTypeCode
     return df
 
-def event_startdate_features(StartDate_df):
+def event_startdate_features(StartDate_df):         
     StartDate_df = StartDate_df.copy()
     StartDate_df = addSeasonCode(StartDate_df)
-    # StartDate_df['StartHour'] = StartDate_df.StartDate.dt.hour
     StartDate_df['StartDayofWeek'] = StartDate_df.StartDate.dt.dayofweek
     StartDate_df['StartQuarter'] = StartDate_df.StartDate.dt.quarter
     StartDate_df['StartDayofyear'] = StartDate_df.StartDate.dt.dayofyear
@@ -70,9 +69,8 @@ def event_startdate_features(StartDate_df):
     StartDate_df['StartDate'] = StartDate_df.StartDate.dt.date
     return StartDate_df
 
-def booking_startdate_feautre(booking_dates_df):
+def booking_startdate_feautre(booking_dates_df):            # This functions takes in the generated weeks to event booking dates and creates its features
     booking_dates_df = booking_dates_df.copy()
-    # booking_dates_df['BookedHour'] = booking_dates_df.StatusCreatedDate.dt.hour
     
     booking_dates_df['StatusCreatedDayofWeek'] = booking_dates_df.StatusCreatedDate.dt.dayofweek
     booking_dates_df['StatusCreatedQuarter'] = booking_dates_df.StatusCreatedDate.dt.quarter
@@ -139,9 +137,6 @@ st.sidebar.header("Make Prediction")
 # Creating inputs and button
 event_type = st.sidebar.selectbox("Event Type:", config.keys() )
 start_date = st.sidebar.date_input("Event Start Date", datetime.date(2023, 4, 1))
-start_time = dt.datetime.strptime('0000','%H%M').time()
-
-start_datetime = datetime.datetime.combine(start_date, start_time)
 
 weeks_to_event = st.sidebar.number_input("Booking Period (Weeks to EventDate)", min_value=0, max_value=100, value=1)
 make_pred = st.sidebar.button("Predict")
@@ -150,25 +145,24 @@ make_pred = st.sidebar.button("Predict")
 if make_pred:
     with st.spinner('Generating predictions. Please wait....'):
         time.sleep(1)
- 
-    Client = pd.DataFrame.from_dict([{"StartDate": start_date}])
-    Client["StartDate"] = pd.to_datetime(start_date,errors='coerce')              # converting created Event Startdate column with users StartDate to datetime format
-
-    # purchase_period_prediction = predict_period(Client)
     
+    # Creates dataframe with the start date user input to extract time formats
+    Client = pd.DataFrame.from_dict([{"StartDate": start_date}])
+    Client["StartDate"] = pd.to_datetime(start_date,errors='coerce')    # converting created Event Startdate column to datetime format
+    
+
+    # Creates dataframe with start date, booking period and event type input from user to generate features for predicting weekly sales
     sales_weeks_df = pd.DataFrame(ticket_sales_features(pd.to_datetime(start_date,errors='coerce'), weeks_to_event,event_type))
+    # Makes predictions with the generated features used to predict weekly sales
     sales_weeks_pred = predictWeeklySales(sales_weeks_df)
 
-    # st.success(f"Predicted purchase period {purchase_period_prediction}")
-
-    # st.success(f"Predicted purchase period {sales_weeks_pred}")
-    # st.dataframe(sales_weeks_pred, use_container_width=True)
-    # st.subheader(f"Predicted Species: {species_pred}")
     totalSales = sales_weeks_pred['Sales Prediction'].sum()
-    st.success(f"Based on your preferred event type and booking period for the weeks to your event start date, the total number of ticket sales for your event is {str(totalSales)}", icon="ℹ️")
+    st.success(f"Based on your preferred event type and booking period for the weeks to your event start date, the total number of ticket sales for your event is {str(totalSales)}",icon="ℹ️")
     
+    # Displays final dataframe showing weekly sales and corresponding features  
     st.info("Weekly sales distribution predictions")
     st.dataframe(sales_weeks_pred, use_container_width=True)
+    # Plots a line graph showing the weekly sales Vs Weeks to Event start date
     st.info("Plotting Week vs Sales Prediction")
     st.line_chart(sales_weeks_pred, x='Weeks to Event', y='Sales Prediction')
 
@@ -176,9 +170,9 @@ if make_pred:
 
     st.markdown(f"From the predictions above, it shows the sales distribution to your preferred booking period of {weeks_to_event} (weeks to event start date). The table above displays the weeks to event and the week starting date of the year, the predicted sales of that week, the cummulated Sales prediction and booking percentage to the week of event start date.")
     st.markdown("Below shows the checkpoint stages based on percentiles (25%, 50%, and 90%) of the cumlated sales predicted column")
-    st.subheader(f"Checkpoint 1 (25th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.75))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.75))} weeks to event")
+    st.subheader(f"Checkpoint 1 (25th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.25))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.75))} weeks to event")
     st.subheader(f"Checkpoint 2 (50th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.5))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.5))} weeks to event")
-    st.subheader(f"Checkpoint 3 (90th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.1))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.1))} weeks to event")
+    st.subheader(f"Checkpoint 3 (90th percentile) - {round(sales_weeks_pred['Cummulated Sales Prediction'].quantile(0.9))} tickets by {round(sales_weeks_pred['Weeks to Event'].quantile(0.1))} weeks to event")
 
     st.markdown("By matching your actual cumulated sales by the predicted cumulated sales by each checkpoint, if the actual is higher/below the predicted, please consider increasing/reducing the size of venue or the promotions.")
                 
