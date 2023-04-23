@@ -19,33 +19,10 @@ with open(config_path + '/eventtype_encoder.json', 'r') as f:
     config = json.load(f)
 
 # Loading the saved model
-model_period = xgb.XGBRegressor()
-model_period.load_model("06_Web_Application/pages/purchase_period_model.json")
-
 model_sales = xgb.XGBRegressor()
 model_sales.load_model("06_Web_Application/pages/weekly_sales_model.json")
 #Caching the model for faster loading
 @st.cache_resource
-
-def addSeasonCode(df):
-    # Creating the Season column
-    _condition_winter = (df.StartDate.dt.month>=1)&(df.StartDate.dt.month<=3)
-    _condtion_spring = (df.StartDate.dt.month>=4)&(df.StartDate.dt.month<=6)
-    _condition_summer = (df.StartDate.dt.month>=7)&(df.StartDate.dt.month<=9)
-    _condition_autumn = (df.StartDate.dt.month>=10)&(df.StartDate.dt.month<=12)
-    
-    df['StartSeason'] = np.where(_condition_winter,'Winter',np.where(_condtion_spring,'Spring',np.where(_condition_summer,'Summer',np.where(_condition_autumn,'Autumn',np.nan))))
-
-    eventSeasonCode = []
-    for row in df['StartSeason']:
-        if row == 'Autumn': eventSeasonCode.append(0)
-        if row == 'Winter': eventSeasonCode.append(3)
-        if row == 'Spring': eventSeasonCode.append(1)
-        if row == 'Summer': eventSeasonCode.append(2)
-
-    df['Season'] = eventSeasonCode
-
-    return df
 
 def eventTypeConversion(df, event_type, purchase_period):           # This function converts the users event type and maps it to the decoded number for the ML model
     
@@ -55,19 +32,6 @@ def eventTypeConversion(df, event_type, purchase_period):           # This funct
 
     df['EventType'] = eventTypeCode
     return df
-
-def event_startdate_features(StartDate_df):         
-    StartDate_df = StartDate_df.copy()
-    StartDate_df = addSeasonCode(StartDate_df)
-    StartDate_df['StartDayofWeek'] = StartDate_df.StartDate.dt.dayofweek
-    StartDate_df['StartQuarter'] = StartDate_df.StartDate.dt.quarter
-    StartDate_df['StartDayofyear'] = StartDate_df.StartDate.dt.dayofyear
-    StartDate_df['StartMonth'] = StartDate_df.StartDate.dt.month
-    StartDate_df['StartYear'] = StartDate_df.StartDate.dt.year
-    StartDate_df['StartDayofMonth'] = StartDate_df.StartDate.dt.day
-    StartDate_df['StartWeekofYear'] = np.uint32(np.int32(StartDate_df.StartDate.dt.isocalendar().week))
-    StartDate_df['StartDate'] = StartDate_df.StartDate.dt.date
-    return StartDate_df
 
 def booking_startdate_feautre(booking_dates_df):            # This functions takes in the generated weeks to event booking dates and creates its features
     booking_dates_df = booking_dates_df.copy()
@@ -82,13 +46,6 @@ def booking_startdate_feautre(booking_dates_df):            # This functions tak
     booking_dates_df['StatusCreatedDate'] = booking_dates_df.StatusCreatedDate.dt.date
 
     return booking_dates_df
-
-
-def predict_period(StartDate):          # This function takes in a DatFrame with Event StartDate to break down its features and predict purchase period 
-    df2 = event_startdate_features(Client).drop(labels=['StartDate', 'StartSeason'], axis=1)
-    period_pred_out = model_period.predict(df2)
-    # df['Purchase_period_Predicted'] = prediction_out
-    return round(period_pred_out[0])
 
 def ticket_sales_features(StartDate, purchase_period, event_type):          # This function creates features required to predict weekly sales distribution
     freq = '-1W-SUN'
